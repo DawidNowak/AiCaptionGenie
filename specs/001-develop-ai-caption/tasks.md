@@ -59,17 +59,17 @@ Next.js 14 App Router structure:
 
 ### Phase 2: Core API Infrastructure (Day 1-2: 3-4 hours)
 
-- [ ] **T003** [P] Create OpenAI client wrapper in `src/lib/openai.ts`
+- [x] **T003** [P] Create OpenAI client wrapper in `src/lib/openai.ts`
 
   - **Success**: Handles GPT-4o-mini and Vision API with basic error handling
   - **Time**: 30 min
 
-- [ ] **T004** [P] Create file validation utility in `src/lib/file-validation.ts`
+- [x] **T004** [P] Create file validation utility in `src/lib/file-validation.ts`
 
   - **Success**: Validates JPEG/PNG/GIF/MP4/MOV formats and 10MB size limit
   - **Time**: 25 min
 
-- [ ] **T005** [P] Create rate limiting utility in `src/lib/rate-limit.ts`
+- [x] **T005** [P] Create rate limiting utility in `src/lib/rate-limit.ts`
 
   - **Success**: localStorage tracking with daily UTC reset, 3 generation limit
   - **Time**: 25 min
