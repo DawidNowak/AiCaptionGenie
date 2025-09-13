@@ -1,0 +1,472 @@
+openapi: 3.0.3
+info:
+  title: AI Caption Genie API
+  description: REST API for AI-powered social media caption generation
+  version: 1.0.0
+  contact:
+    name: AI Caption Genie Support
+    email: support@aicaptiongenie.com
+
+servers:
+  - url: https://aicaptiongenie.vercel.app/api
+    description: Production server
+  - url: http://localhost:3000/api
+    description: Development server
+
+paths:
+  /generate:
+    post:
+      summary: Generate social media captions
+      description: Generate 5-10 platform-optimized captions based on text input or uploaded media
+      tags:
+        - Caption Generation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CaptionRequest"
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: Image or video file (max 10MB)
+                platform:
+                  $ref: "#/components/schemas/Platform"
+                tone:
+                  $ref: "#/components/schemas/Tone"
+              required:
+                - platform
+                - tone
+      responses:
+        "200":
+          description: Captions generated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CaptionResponse"
+        "400":
+          description: Invalid request data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "413":
+          description: File too large
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "429":
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RateLimitResponse"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /upload:
+    post:
+      summary: Upload and validate media file
+      description: Upload image or video file for caption generation with validation
+      tags:
+        - File Upload
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: Image or video file (JPEG, PNG, GIF, MP4, MOV, max 10MB)
+              required:
+                - file
+      responses:
+        "200":
+          description: File uploaded and validated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UploadResponse"
+        "400":
+          description: Invalid file format
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "413":
+          description: File too large
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Upload processing error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /stripe/create-checkout:
+    post:
+      summary: Create Stripe checkout session
+      description: Initialize payment flow for unlimited caption generation
+      tags:
+        - Payments
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CheckoutRequest"
+      responses:
+        "200":
+          description: Checkout session created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CheckoutResponse"
+        "400":
+          description: Invalid checkout request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Payment processing error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /stripe/webhook:
+    post:
+      summary: Stripe webhook handler
+      description: Handle payment confirmations and subscription updates
+      tags:
+        - Payments
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Stripe webhook event payload
+      responses:
+        "200":
+          description: Webhook processed successfully
+        "400":
+          description: Invalid webhook signature
+        "500":
+          description: Webhook processing error
+
+  /health:
+    get:
+      summary: Health check endpoint
+      description: Check API availability and status
+      tags:
+        - System
+      responses:
+        "200":
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthResponse"
+
+components:
+  schemas:
+    Platform:
+      type: string
+      enum: [instagram, tiktok, linkedin]
+      description: Target social media platform
+
+    Tone:
+      type: string
+      enum: [casual, professional, humorous]
+      description: Desired caption tone
+
+    CaptionRequest:
+      type: object
+      properties:
+        inputType:
+          type: string
+          enum: [text, image, video]
+          description: Type of input provided
+        content:
+          type: string
+          description: Text description for generation
+        platform:
+          $ref: "#/components/schemas/Platform"
+        tone:
+          $ref: "#/components/schemas/Tone"
+        sessionId:
+          type: string
+          description: Client-generated session identifier for rate limiting
+      required:
+        - inputType
+        - content
+        - platform
+        - tone
+        - sessionId
+
+    Caption:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique caption identifier
+        text:
+          type: string
+          description: Complete caption text with emojis
+        callToAction:
+          type: string
+          description: Extracted call-to-action phrase
+        hashtags:
+          type: array
+          items:
+            type: string
+          minItems: 3
+          maxItems: 5
+          description: Relevant hashtags for the content
+        platform:
+          $ref: "#/components/schemas/Platform"
+        tone:
+          $ref: "#/components/schemas/Tone"
+        emojiCount:
+          type: integer
+          minimum: 1
+          description: Number of emojis included
+        characterCount:
+          type: integer
+          description: Total character count
+      required:
+        - id
+        - text
+        - callToAction
+        - hashtags
+        - platform
+        - tone
+        - emojiCount
+        - characterCount
+
+    CaptionResponse:
+      type: object
+      properties:
+        requestId:
+          type: string
+          description: Reference to the original request
+        captions:
+          type: array
+          items:
+            $ref: "#/components/schemas/Caption"
+          minItems: 5
+          maxItems: 10
+          description: Generated captions array
+        processingTime:
+          type: integer
+          description: Processing time in milliseconds
+        tokensUsed:
+          type: integer
+          description: OpenAI tokens consumed
+        timestamp:
+          type: string
+          format: date-time
+          description: Response generation timestamp
+        status:
+          type: string
+          enum: [success, error]
+          description: Generation result status
+        remainingGenerations:
+          type: integer
+          description: Remaining free generations for this session
+      required:
+        - requestId
+        - captions
+        - processingTime
+        - tokensUsed
+        - timestamp
+        - status
+        - remainingGenerations
+
+    UploadResponse:
+      type: object
+      properties:
+        fileId:
+          type: string
+          description: Temporary file identifier
+        fileName:
+          type: string
+          description: Original filename
+        fileSize:
+          type: integer
+          description: File size in bytes
+        mimeType:
+          type: string
+          description: File MIME type
+        analysisPreview:
+          type: string
+          description: Brief description of file content (for images)
+        validationStatus:
+          type: string
+          enum: [valid, invalid]
+          description: File validation result
+      required:
+        - fileId
+        - fileName
+        - fileSize
+        - mimeType
+        - validationStatus
+
+    CheckoutRequest:
+      type: object
+      properties:
+        priceId:
+          type: string
+          description: Stripe price ID for the subscription plan
+        successUrl:
+          type: string
+          format: uri
+          description: URL to redirect after successful payment
+        cancelUrl:
+          type: string
+          format: uri
+          description: URL to redirect after cancelled payment
+        sessionId:
+          type: string
+          description: Client session identifier
+      required:
+        - priceId
+        - successUrl
+        - cancelUrl
+        - sessionId
+
+    CheckoutResponse:
+      type: object
+      properties:
+        checkoutUrl:
+          type: string
+          format: uri
+          description: Stripe checkout session URL
+        sessionId:
+          type: string
+          description: Stripe session identifier
+      required:
+        - checkoutUrl
+        - sessionId
+
+    RateLimitResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message
+        code:
+          type: string
+          enum: [RATE_LIMIT_EXCEEDED]
+          description: Error code
+        message:
+          type: string
+          description: User-friendly error message
+        resetTime:
+          type: string
+          format: date-time
+          description: When the rate limit resets
+        upgradeUrl:
+          type: string
+          format: uri
+          description: URL to upgrade to unlimited plan
+      required:
+        - error
+        - code
+        - message
+        - resetTime
+        - upgradeUrl
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: User-friendly error message
+        details:
+          type: object
+          description: Additional error context
+      required:
+        - error
+        - code
+        - message
+
+    HealthResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [healthy, degraded, unhealthy]
+          description: Service health status
+        timestamp:
+          type: string
+          format: date-time
+          description: Health check timestamp
+        version:
+          type: string
+          description: API version
+        dependencies:
+          type: object
+          properties:
+            openai:
+              type: string
+              enum: [available, unavailable, degraded]
+              description: OpenAI API status
+            stripe:
+              type: string
+              enum: [available, unavailable, degraded]
+              description: Stripe API status
+      required:
+        - status
+        - timestamp
+        - version
+        - dependencies
+
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key for authenticated requests (future use)
+
+security:
+  - ApiKeyAuth: []
+
+tags:
+  - name: Caption Generation
+    description: Core caption generation functionality
+  - name: File Upload
+    description: Media file upload and processing
+  - name: Payments
+    description: Stripe payment integration
+  - name: System
+    description: System health and monitoring
