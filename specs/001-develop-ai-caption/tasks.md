@@ -74,12 +74,12 @@ Next.js 14 App Router structure:
   - **Success**: localStorage tracking with daily UTC reset, 3 generation limit
   - **Time**: 25 min
 
-- [ ] **T006** Create caption generation contract test in `tests/api/generate.contract.test.ts`
+- [x] **T006** Create caption generation contract test in `tests/api/generate.contract.test.ts`
 
   - **Success**: Test validates core request/response flow, MUST FAIL initially
   - **Time**: 20 min
 
-- [ ] **T007** Create POST /api/generate endpoint in `src/app/api/generate/route.ts`
+- [x] **T007** Create POST /api/generate endpoint in `src/app/api/generate/route.ts`
   - **Success**: Handles text inputs, calls OpenAI, returns 5-10 formatted captions
   - **Time**: 45 min
 
