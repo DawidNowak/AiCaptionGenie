@@ -48,12 +48,12 @@ Next.js 14 App Router structure:
 
 ### Phase 1: Setup & Foundation (Day 1: 1-2 hours)
 
-- [ ] **T001** Create Next.js 14 project with TypeScript, Tailwind CSS, and essential dependencies (OpenAI SDK, Stripe SDK, Zod)
+- [x] **T001** Create Next.js 14 project with TypeScript, Tailwind CSS, and essential dependencies (OpenAI SDK, Stripe SDK, Zod)
 
   - **Success**: `npm run dev` starts, all packages installed, TypeScript strict mode enabled
   - **Time**: 30 min
 
-- [ ] **T002** [P] Create essential TypeScript interfaces in `src/types/index.ts` (combined file)
+- [x] **T002** [P] Create essential TypeScript interfaces in `src/types/index.ts` (combined file)
   - **Success**: Platform/Tone enums, CaptionRequest/Response interfaces, UsageSession types
   - **Time**: 20 min
 
