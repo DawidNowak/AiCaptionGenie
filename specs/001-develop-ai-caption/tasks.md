@@ -85,12 +85,12 @@ Next.js 14 App Router structure:
 
 ### Phase 3: File Upload & Vision API (Day 2: 2-3 hours)
 
-- [ ] **T008** Create file upload contract test in `tests/api/upload.contract.test.ts`
+- [x] **T008** Create file upload contract test in `tests/api/upload.contract.test.ts`
 
   - **Success**: Test validates file upload limits and formats, MUST FAIL initially
   - **Time**: 15 min
 
-- [ ] **T009** Create POST /api/upload endpoint in `src/app/api/upload/route.ts`
+- [x] **T009** Create POST /api/upload endpoint in `src/app/api/upload/route.ts`
   - **Success**: Validates files, processes with Vision API, integrates with caption generation
   - **Time**: 40 min
 
