@@ -130,10 +130,13 @@ npm run test:e2e
 
 The project includes specialized testing setup for Next.js API routes:
 
+- **Enhanced FormData polyfill**: Custom implementation for Node.js test environment
+- **NextResponse compatibility**: Uses constructor pattern instead of static methods for Jest
 - **whatwg-fetch polyfill**: Enables proper Request/Response handling in Jest environment
 - **Custom Jest setup**: Configured for Next.js server-side API testing
 - **Mock strategies**: Comprehensive mocking for external services (OpenAI, Stripe)
 - **TDD approach**: All tests written before implementation (red-green-refactor)
+- **Import standardization**: All test files use '@/' alias for consistent imports
 
 ## 📁 Project Structure
 
@@ -173,6 +176,16 @@ jest.setup.js           # Custom test environment setup (includes whatwg-fetch)
 - **Error Boundaries** - Comprehensive error handling
 - **Performance** - Optimized for mobile-first responsive design
 - **Security** - No API keys exposed to client, proper validation
+- **Import Standardization** - Consistent '@/' alias pattern across all files
+
+### Import Standards
+
+This project follows strict import standards for maintainability and consistency:
+
+- **Use '@/' alias** for all internal imports (mapped to 'src/' in tsconfig.json)
+- **Consistent patterns** across components, tests, and API routes
+- **TypeScript path mapping** configured for optimal IntelliSense support
+- **Example**: `import { Platform } from '@/types'` instead of `../../src/types`
 
 ## 🌟 Why Spec-Driven Development?
 

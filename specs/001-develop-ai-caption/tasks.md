@@ -127,7 +127,7 @@ Next.js 14 App Router structure:
   - **Success**: Test validates checkout creation, MUST FAIL initially
   - **Time**: 15 min
 
-- [ ] **T016** Create POST /api/stripe/create-checkout in `src/app/api/stripe/create-checkout/route.ts`
+- [x] **T016** Create POST /api/stripe/create-checkout in `src/app/api/stripe/create-checkout/route.ts`
 
   - **Success**: Creates checkout session with proper success/cancel URLs
   - **Time**: 30 min
@@ -214,6 +214,27 @@ Task: "Create rate limit component in src/components/RateLimit.tsx"
 Task: "Add responsive design and mobile optimization"
 Task: "Optimize OpenAI prompts for cost efficiency"
 ```
+
+## Post-MVP Improvements Completed
+
+**These improvements were implemented after core MVP completion to enhance code quality and maintainability:**
+
+- [x] **I001** Standardize import patterns across entire codebase
+
+  - **Success**: All files use '@/' alias consistently, enhanced IntelliSense support
+  - **Files**: All components, API routes, tests, and utilities updated
+  - **Time**: 45 min
+
+- [x] **I002** Enhance Jest test environment compatibility
+
+  - **Success**: Fixed NextResponse.json() issues, added FormData polyfill, improved contract tests
+  - **Files**: `jest.setup.js`, all API routes, contract tests
+  - **Time**: 60 min
+
+- [x] **I003** Implement standardized API response patterns
+  - **Success**: Consistent error/success response helpers across all API routes
+  - **Files**: `generate/route.ts`, `upload/route.ts`, `stripe/create-checkout/route.ts`
+  - **Time**: 30 min
 
 ## Deferred to Post-MVP
 

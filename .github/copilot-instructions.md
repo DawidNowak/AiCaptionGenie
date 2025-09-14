@@ -54,6 +54,11 @@ src/
 - Co-locate tests with components
 - Use barrel exports from directories
 - Keep utility functions in /lib
+- **Import Standards**: Use '@/' alias for all internal imports
+  - Consistent across all components, tests, and API routes
+  - Mapped to 'src/' directory in tsconfig.json
+  - Example: `import { Platform } from '@/types'`
+  - Never use relative imports like `../../src/types`
 
 ## Key Features to Implement
 
@@ -145,6 +150,26 @@ interface ComponentProps {
 - E2E tests: `feature.spec.ts`
 - Contract tests: `endpoint.contract.test.ts`
 
+### Jest Environment Compatibility
+
+For Next.js API route testing, use these patterns:
+
+```typescript
+// NextResponse constructor pattern (not NextResponse.json)
+function createErrorResponse(message: string, status: number): NextResponse {
+  return new NextResponse(JSON.stringify({ error: message }), {
+    status,
+    headers: { "Content-Type": "application/json" },
+  });
+}
+
+// Mock NextRequest with proper FormData handling
+const request = {
+  formData: jest.fn().mockResolvedValue(formData),
+  headers: { get: jest.fn().mockReturnValue("test-value") },
+} as unknown as NextRequest;
+```
+
 ## Performance Guidelines
 
 ### Client-Side
@@ -195,8 +220,12 @@ interface ComponentProps {
 
 - Added TypeScript strict mode configuration
 - Implemented OpenAI Vision API integration
-- Created Stripe webhook handling
+- Created Stripe webhook handling with T016 checkout endpoint
 - Set up Tailwind CSS responsive design
+- **Standardized import patterns**: All files now use '@/' alias consistently
+- **Enhanced Jest compatibility**: Added NextResponse constructor patterns for test environment
+- **Improved FormData handling**: Custom polyfill for Node.js test environment
+- **Fixed API route testing**: All contract tests now use compatible request mocking
 
 ## Development Workflow
 
