@@ -111,7 +111,7 @@ Next.js 14 App Router structure:
   - **Success**: Shows usage count and upgrade messaging when limit reached
   - **Time**: 25 min
 
-- [ ] **T013** Create main page layout in `src/app/page.tsx`
+- [x] **T013** Create main page layout in `src/app/page.tsx`
   - **Success**: Integrates all components with state management and loading states
   - **Time**: 35 min
 

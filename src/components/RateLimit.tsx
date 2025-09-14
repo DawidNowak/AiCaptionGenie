@@ -4,8 +4,8 @@
  * Designed for <30s user comprehension per constitution
  */
 
-import React, { useEffect, useState } from 'react';
-import { checkRateLimit, type UsageStatus } from '../lib/rate-limit';
+import React, { useEffect, useState } from "react";
+import { checkRateLimit, type UsageStatus } from "../lib/rate-limit";
 
 export function RateLimit() {
   const [usageStatus, setUsageStatus] = useState<UsageStatus | null>(null);
@@ -30,8 +30,8 @@ export function RateLimit() {
   return (
     <div className="bg-gray-50 rounded-lg p-4 border border-gray-200 w-full max-w-md">
       {/* Usage Counter - Always visible for transparency */}
-      <div 
-        role="status" 
+      <div
+        role="status"
         aria-live="polite"
         className="text-sm font-medium text-gray-700 mb-3"
       >
@@ -42,24 +42,24 @@ export function RateLimit() {
 
       {/* Progress Bar for Visual Clarity */}
       <div className="w-full bg-gray-200 rounded-full h-2 mb-3">
-        <div 
+        <div
           className={`h-2 rounded-full transition-all duration-300 ${
-            used === totalLimit ? 'bg-amber-500' : 'bg-blue-500'
+            used === totalLimit ? "bg-amber-500" : "bg-blue-500"
           }`}
           style={{ width: `${(used / totalLimit) * 100}%` }}
           aria-hidden="true"
         />
       </div>
-      
+
       {/* Upgrade Message - Only when limit reached */}
       {!allowed && (
         <div className="space-y-3">
-          <div 
+          <div
             role="alert"
             className="text-sm text-amber-800 bg-amber-50 p-3 rounded-md border border-amber-200"
           >
-            <strong>Daily limit reached!</strong> You've used all 3 free generations today. 
-            Upgrade to a paid plan for unlimited access.
+            <strong>Daily limit reached!</strong> You've used all 3 free
+            generations today. Upgrade to a paid plan for unlimited access.
           </div>
           <button
             type="button"
