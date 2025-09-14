@@ -106,7 +106,7 @@ Next.js 14 App Router structure:
   - **Success**: Shows captions with copy buttons and basic download functionality
   - **Time**: 35 min
 
-- [ ] **T012** [P] Create rate limit component in `src/components/RateLimit.tsx`
+- [x] **T012** [P] Create rate limit component in `src/components/RateLimit.tsx`
 
   - **Success**: Shows usage count and upgrade messaging when limit reached
   - **Time**: 25 min

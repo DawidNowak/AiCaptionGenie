@@ -2,7 +2,7 @@
  * CaptionResults Component
  * Displays generated captions with copy and download functionality
  * Implements T011 requirements following TDD principles
- * 
+ *
  * Features:
  * - Responsive grid layout for mobile and desktop
  * - One-click copy to clipboard with visual feedback
@@ -11,7 +11,7 @@
  * - Privacy-first: no data stored or tracked
  */
 
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 interface CaptionResultsProps {
   /** Array of caption strings to display */
@@ -41,16 +41,16 @@ const CaptionResults: React.FC<CaptionResultsProps> = ({ captions }) => {
       await navigator.clipboard.writeText(caption);
       setCopiedIndex(index);
       setCopyError(null);
-      
+
       // Reset feedback after 2 seconds
       setTimeout(() => {
         setCopiedIndex(null);
       }, 2000);
     } catch (error) {
-      console.warn('Copy failed:', error);
+      console.warn("Copy failed:", error);
       setCopyError(index);
       setCopiedIndex(null);
-      
+
       // Reset error after 2 seconds
       setTimeout(() => {
         setCopyError(null);
@@ -63,16 +63,16 @@ const CaptionResults: React.FC<CaptionResultsProps> = ({ captions }) => {
    * Privacy-first: client-side only, no server communication
    */
   const handleDownloadAll = () => {
-    const timestamp = new Date().toISOString().split('T')[0];
-    const content = captions.join('\n\n');
-    const blob = new Blob([content], { type: 'text/plain' });
+    const timestamp = new Date().toISOString().split("T")[0];
+    const content = captions.join("\n\n");
+    const blob = new Blob([content], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
-    
-    const link = document.createElement('a');
+
+    const link = document.createElement("a");
     link.href = url;
     link.download = `captions-${timestamp}.txt`;
     link.click();
-    
+
     // Cleanup to prevent memory leaks
     URL.revokeObjectURL(url);
   };
@@ -80,14 +80,14 @@ const CaptionResults: React.FC<CaptionResultsProps> = ({ captions }) => {
   return (
     <div className="w-full max-w-4xl mx-auto p-4">
       {/* Caption List - Mobile-first responsive design */}
-      <ul 
-        role="list" 
+      <ul
+        role="list"
         className="grid gap-4 md:grid-cols-1 lg:grid-cols-2"
         aria-label="Generated captions"
       >
         {captions.map((caption, index) => (
-          <li 
-            key={index} 
+          <li
+            key={index}
             role="listitem"
             className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow duration-200"
           >
@@ -96,21 +96,25 @@ const CaptionResults: React.FC<CaptionResultsProps> = ({ captions }) => {
               <p className="text-gray-800 leading-relaxed whitespace-pre-wrap text-sm md:text-base">
                 {caption}
               </p>
-              
+
               {/* Copy Button with Visual Feedback */}
               <button
                 onClick={() => handleCopy(caption, index)}
                 aria-label={`Copy caption ${index + 1} to clipboard`}
                 className={`self-start px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all duration-200 text-sm font-medium ${
                   copiedIndex === index
-                    ? 'bg-green-500 text-white ring-green-500'
+                    ? "bg-green-500 text-white ring-green-500"
                     : copyError === index
-                    ? 'bg-red-500 text-white ring-red-500'
-                    : 'bg-blue-500 text-white hover:bg-blue-600 ring-blue-500'
+                    ? "bg-red-500 text-white ring-red-500"
+                    : "bg-blue-500 text-white hover:bg-blue-600 ring-blue-500"
                 }`}
                 disabled={copiedIndex === index || copyError === index}
               >
-                {copiedIndex === index ? '✓ Copied!' : copyError === index ? '✗ Copy failed' : 'Copy'}
+                {copiedIndex === index
+                  ? "✓ Copied!"
+                  : copyError === index
+                  ? "✗ Copy failed"
+                  : "Copy"}
               </button>
             </div>
           </li>
@@ -127,7 +131,7 @@ const CaptionResults: React.FC<CaptionResultsProps> = ({ captions }) => {
           📥 Download All
         </button>
         <p className="text-xs text-gray-500 mt-2">
-          Downloads as captions-{new Date().toISOString().split('T')[0]}.txt
+          Downloads as captions-{new Date().toISOString().split("T")[0]}.txt
         </p>
       </div>
     </div>
