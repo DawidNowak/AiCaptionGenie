@@ -122,7 +122,7 @@ Next.js 14 App Router structure:
   - **Success**: Handles checkout sessions with basic webhook verification
   - **Time**: 30 min
 
-- [ ] **T015** Create Stripe checkout contract test in `tests/api/stripe.contract.test.ts`
+- [x] **T015** Create Stripe checkout contract test in `tests/api/stripe.contract.test.ts`
 
   - **Success**: Test validates checkout creation, MUST FAIL initially
   - **Time**: 15 min

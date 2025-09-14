@@ -38,12 +38,44 @@ export function getStripeClient(): Stripe {
 }
 
 /**
- * Create a checkout session for AI Caption Genie Pro subscription
+ * Checkout session parameters interface
+ */
+export interface CheckoutSessionParams {
+    planId: string;
+    successUrl?: string;
+    cancelUrl?: string;
+}
+
+/**
+ * Checkout session response interface  
+ */
+export interface CheckoutSessionResponse {
+    sessionId: string;
+    url: string;
+}
+
+/**
+ * Create a checkout session for AI Caption Genie subscription
  * Returns session object with ID and URL for redirecting user
  */
-export async function createCheckoutSession(): Promise<Stripe.Checkout.Session> {
+export async function createCheckoutSession(params: CheckoutSessionParams): Promise<CheckoutSessionResponse> {
     try {
         const stripe = getStripeClient();
+
+        // Validate plan ID
+        if (!params.planId) {
+            throw new Error('Plan ID is required');
+        }
+
+        // For MVP, only support unlimited_plan
+        if (params.planId !== 'unlimited_plan') {
+            throw new Error(`Invalid plan ID: ${params.planId}`);
+        }
+
+        // Set default URLs if not provided
+        const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+        const successUrl = params.successUrl || `${baseUrl}/success?session_id={CHECKOUT_SESSION_ID}`;
+        const cancelUrl = params.cancelUrl || `${baseUrl}/cancel`;
 
         const session = await stripe.checkout.sessions.create({
             mode: 'subscription',
@@ -62,12 +94,21 @@ export async function createCheckoutSession(): Promise<Stripe.Checkout.Session> 
                 },
                 quantity: 1,
             }],
-            success_url: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/success?session_id={CHECKOUT_SESSION_ID}`,
-            cancel_url: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/`,
+            success_url: successUrl,
+            cancel_url: cancelUrl,
         });
 
-        return session;
+        return {
+            sessionId: session.id,
+            url: session.url || ''
+        };
     } catch (error) {
+        if (error instanceof Error) {
+            // Preserve specific validation errors but wrap Stripe API errors
+            if (error.message.includes('Invalid plan ID') || error.message.includes('Plan ID is required')) {
+                throw error;
+            }
+        }
         throw new Error('Failed to create checkout session');
     }
 }

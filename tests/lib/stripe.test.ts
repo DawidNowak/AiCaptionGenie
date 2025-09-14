@@ -74,9 +74,12 @@ describe('Stripe Client Wrapper', () => {
 
             const { createCheckoutSession } = await import('@/lib/stripe');
 
-            const session = await createCheckoutSession();
+            const result = await createCheckoutSession({
+                planId: 'unlimited_plan'
+            });
 
-            expect(session).toEqual(mockSession);
+            expect(result.sessionId).toBe('cs_test_mock_session_id');
+            expect(result.url).toBe('https://checkout.stripe.com/pay/cs_test_mock_session_id');
             expect(mockCreate).toHaveBeenCalledWith({
                 mode: 'subscription',
                 payment_method_types: ['card'],
@@ -104,7 +107,9 @@ describe('Stripe Client Wrapper', () => {
 
             const { createCheckoutSession } = await import('@/lib/stripe');
 
-            await expect(createCheckoutSession()).rejects.toThrow('Failed to create checkout session');
+            await expect(createCheckoutSession({
+                planId: 'unlimited_plan'
+            })).rejects.toThrow('Failed to create checkout session');
         });
     });
 
