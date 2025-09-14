@@ -117,7 +117,7 @@ Next.js 14 App Router structure:
 
 ### Phase 5: Payment Integration (Day 3-4: 2-3 hours)
 
-- [ ] **T014** [P] Create Stripe client wrapper in `src/lib/stripe.ts`
+- [x] **T014** [P] Create Stripe client wrapper in `src/lib/stripe.ts`
 
   - **Success**: Handles checkout sessions with basic webhook verification
   - **Time**: 30 min
