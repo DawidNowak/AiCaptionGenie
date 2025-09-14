@@ -5,7 +5,7 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import * as rateLimitLib from "../../src/lib/rate-limit";
+import * as rateLimitLib from "@/lib/rate-limit";
 import { RateLimit } from "@/components/RateLimit";
 
 // Mock the rate limit utility

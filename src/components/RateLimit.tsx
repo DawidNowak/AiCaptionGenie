@@ -5,7 +5,7 @@
  */
 
 import React, { useEffect, useState } from "react";
-import { checkRateLimit, type UsageStatus } from "../lib/rate-limit";
+import { checkRateLimit, type UsageStatus } from "@/lib/rate-limit";
 
 export function RateLimit() {
   const [usageStatus, setUsageStatus] = useState<UsageStatus | null>(null);

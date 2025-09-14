@@ -9,6 +9,32 @@ import { generateCaptions } from '@/lib/openai';
 import { CaptionRequest, Platform, Tone } from '@/types';
 import { z } from 'zod';
 
+/**
+ * Create a standardized error response
+ */
+function createErrorResponse(message: string, status: number): NextResponse {
+    return new NextResponse(
+        JSON.stringify({ error: message, status: 'error' }),
+        {
+            status,
+            headers: { 'Content-Type': 'application/json' }
+        }
+    );
+}
+
+/**
+ * Create a standardized success response
+ */
+function createSuccessResponse(data: any): NextResponse {
+    return new NextResponse(
+        JSON.stringify(data),
+        {
+            status: 200,
+            headers: { 'Content-Type': 'application/json' }
+        }
+    );
+}
+
 // Validation schema for caption request
 const CaptionRequestSchema = z.object({
     content: z.string().min(1, 'Content is required'),
@@ -174,51 +200,30 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             remainingGenerations: 2 // Mock value for MVP - will be handled by rate limiting later
         };
 
-        return NextResponse.json(response, { status: 200 });
+        return createSuccessResponse(response);
 
     } catch (error) {
         console.error('Caption generation error:', error);
 
         // Handle validation errors
         if (error instanceof z.ZodError) {
-            return NextResponse.json(
-                {
-                    error: error.errors.map(e => e.message).join(', '),
-                    status: 'error'
-                },
-                { status: 400 }
+            return createErrorResponse(
+                error.errors.map(e => e.message).join(', '),
+                400
             );
         }
 
         // Handle OpenAI API key configuration errors
         if (error instanceof Error && error.message === 'OpenAI API key is not configured') {
-            return NextResponse.json(
-                {
-                    error: 'AI service not configured',
-                    status: 'error'
-                },
-                { status: 503 }
-            );
+            return createErrorResponse('AI service not configured', 503);
         }
 
         // Handle OpenAI generation errors
         if (error instanceof Error && error.message === 'Failed to generate captions') {
-            return NextResponse.json(
-                {
-                    error: 'AI service temporarily unavailable',
-                    status: 'error'
-                },
-                { status: 503 }
-            );
+            return createErrorResponse('AI service temporarily unavailable', 503);
         }
 
         // Generic error handling
-        return NextResponse.json(
-            {
-                error: 'Internal server error',
-                status: 'error'
-            },
-            { status: 500 }
-        );
+        return createErrorResponse('Internal server error', 500);
     }
 }

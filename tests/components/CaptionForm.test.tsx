@@ -7,7 +7,7 @@
 import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import { Platform, Tone } from "../../src/types";
+import { Platform, Tone } from "@/types";
 import CaptionForm from "@/components/CaptionForm";
 
 // Mock the API calls

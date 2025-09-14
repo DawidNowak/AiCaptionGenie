@@ -8,6 +8,32 @@ import { NextRequest, NextResponse } from 'next/server';
 import { validateFile } from '@/lib/file-validation';
 import { generateImageCaptions } from '@/lib/openai';
 import { Platform, Tone, CaptionRequest, CaptionResponse } from '@/types';
+
+/**
+ * Create a standardized error response
+ */
+function createErrorResponse(message: string, status: number): NextResponse {
+    return new NextResponse(
+        JSON.stringify({ error: message }),
+        {
+            status,
+            headers: { 'Content-Type': 'application/json' }
+        }
+    );
+}
+
+/**
+ * Create a standardized success response
+ */
+function createSuccessResponse(data: any): NextResponse {
+    return new NextResponse(
+        JSON.stringify(data),
+        {
+            status: 200,
+            headers: { 'Content-Type': 'application/json' }
+        }
+    );
+}
 import { randomUUID } from 'crypto';
 
 /**
@@ -58,10 +84,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         // Extract file from FormData
         const file = formData.get('file') as File;
         if (!file) {
-            return NextResponse.json(
-                { error: 'No file provided' },
-                { status: 400 }
-            );
+            return createErrorResponse('No file provided', 400);
         }
 
         // Extract platform and tone parameters
@@ -69,34 +92,28 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         const tone = formData.get('tone') as string;
 
         if (!platform || !tone) {
-            return NextResponse.json(
-                { error: 'Platform and tone are required' },
-                { status: 400 }
-            );
+            return createErrorResponse('Platform and tone are required', 400);
         }
 
         // Validate platform and tone enums
         if (!Object.values(Platform).includes(platform as Platform)) {
-            return NextResponse.json(
-                { error: 'Invalid platform. Must be one of: instagram, twitter, facebook, linkedin, tiktok' },
-                { status: 400 }
+            return createErrorResponse(
+                'Invalid platform. Must be one of: instagram, twitter, facebook, linkedin, tiktok',
+                400
             );
         }
 
         if (!Object.values(Tone).includes(tone as Tone)) {
-            return NextResponse.json(
-                { error: 'Invalid tone. Must be one of: professional, casual, humorous, inspirational, promotional' },
-                { status: 400 }
+            return createErrorResponse(
+                'Invalid tone. Must be one of: professional, casual, humorous, inspirational, promotional',
+                400
             );
         }
 
         // Validate file using T004 utility
         const validationResult = validateFile(file);
         if (!validationResult.isValid) {
-            return NextResponse.json(
-                { error: validationResult.error },
-                { status: 400 }
-            );
+            return createErrorResponse(validationResult.error!, 400);
         }
 
         // Create caption request object
@@ -132,7 +149,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             }
         };
 
-        return NextResponse.json(responseWithMetadata, { status: 200 });
+        return createSuccessResponse(responseWithMetadata);
 
     } catch (error) {
         console.error('Upload API error:', error);
@@ -140,24 +157,18 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         // Handle OpenAI-specific errors
         if (error instanceof Error) {
             if (error.message.includes('rate limit') || error.message.includes('quota')) {
-                return NextResponse.json(
-                    { error: 'AI service temporarily unavailable. Please try again later.' },
-                    { status: 503 }
+                return createErrorResponse(
+                    'AI service temporarily unavailable. Please try again later.',
+                    503
                 );
             }
 
             if (error.message === 'OpenAI API key is not configured') {
-                return NextResponse.json(
-                    { error: 'Service configuration error' },
-                    { status: 500 }
-                );
+                return createErrorResponse('Service configuration error', 500);
             }
         }
 
         // Generic server error for unknown issues
-        return NextResponse.json(
-            { error: 'Internal server error' },
-            { status: 500 }
-        );
+        return createErrorResponse('Internal server error', 500);
     }
 }

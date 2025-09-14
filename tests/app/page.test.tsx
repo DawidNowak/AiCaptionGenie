@@ -8,7 +8,7 @@ import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { jest } from "@jest/globals";
-import Page from "../../src/app/page";
+import Page from "@/app/page";
 
 // Mock the rate limit utility
 jest.mock("../../src/lib/rate-limit", () => ({

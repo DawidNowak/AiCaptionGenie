@@ -7,8 +7,8 @@
 "use client";
 
 import React, { useState, useRef } from "react";
-import { Platform, Tone } from "../types";
-import { validateFile } from "../lib/file-validation";
+import { Platform, Tone } from "@/types";
+import { validateFile } from "@/lib/file-validation";
 
 interface CaptionFormProps {
   onCaptionsGenerated?: (captions: string[]) => void;

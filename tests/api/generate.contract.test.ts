@@ -5,8 +5,8 @@
  */
 
 import { NextRequest } from 'next/server';
-import { Platform, Tone, CaptionRequest } from '../../src/types';
-import * as openaiLib from '../../src/lib/openai';
+import { Platform, Tone, CaptionRequest } from '@/types';
+import * as openaiLib from '@/lib/openai';
 
 // Mock the OpenAI library
 jest.mock('../../src/lib/openai', () => ({
@@ -42,17 +42,17 @@ describe('POST /api/generate - Contract Test', () => {
         };
 
         const requestBody = JSON.stringify(validRequest);
-        const request = new NextRequest('http://localhost:3000/api/generate', {
+        const request = new Request('http://localhost:3000/api/generate', {
             method: 'POST',
             body: requestBody,
             headers: {
                 'Content-Type': 'application/json'
             }
-        });
+        }) as NextRequest;
 
         // Act - This will fail because the endpoint doesn't exist yet (TDD)
         // Import the route handler (this will fail initially)
-        const { POST } = await import('../../src/app/api/generate/route');
+        const { POST } = await import('@/app/api/generate/route');
         const response = await POST(request);
 
         // Assert - Validate response structure
@@ -126,16 +126,16 @@ describe('POST /api/generate - Contract Test', () => {
         };
 
         const requestBody = JSON.stringify(professionalRequest);
-        const request = new NextRequest('http://localhost:3000/api/generate', {
+        const request = new Request('http://localhost:3000/api/generate', {
             method: 'POST',
             body: requestBody,
             headers: {
                 'Content-Type': 'application/json'
             }
-        });
+        }) as NextRequest;
 
         // Act
-        const { POST } = await import('../../src/app/api/generate/route');
+        const { POST } = await import('@/app/api/generate/route');
         const response = await POST(request);
 
         // Assert
@@ -160,16 +160,16 @@ describe('POST /api/generate - Contract Test', () => {
         };
 
         const requestBody = JSON.stringify(invalidRequest);
-        const request = new NextRequest('http://localhost:3000/api/generate', {
+        const request = new Request('http://localhost:3000/api/generate', {
             method: 'POST',
             body: requestBody,
             headers: {
                 'Content-Type': 'application/json'
             }
-        });
+        }) as NextRequest;
 
         // Act
-        const { POST } = await import('../../src/app/api/generate/route');
+        const { POST } = await import('@/app/api/generate/route');
         const response = await POST(request);
 
         // Assert

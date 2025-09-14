@@ -24,7 +24,7 @@ type CheckoutRequest = z.infer<typeof CheckoutRequestSchema>;
 function createErrorResponse(message: string, status: number): NextResponse {
     return new NextResponse(
         JSON.stringify({ error: message }),
-        { 
+        {
             status,
             headers: { 'Content-Type': 'application/json' }
         }
@@ -37,7 +37,7 @@ function createErrorResponse(message: string, status: number): NextResponse {
 function createSuccessResponse(data: any): NextResponse {
     return new NextResponse(
         JSON.stringify(data),
-        { 
+        {
             status: 200,
             headers: { 'Content-Type': 'application/json' }
         }
@@ -46,32 +46,32 @@ function createSuccessResponse(data: any): NextResponse {
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
     let requestBody: CheckoutRequest;
-    
+
     try {
         // Parse and validate request body for security
         const rawBody = await request.json();
         const validation = CheckoutRequestSchema.safeParse(rawBody);
-        
+
         if (!validation.success) {
             // Format validation errors to match expected test format
             const planIdError = validation.error.errors.find(err => err.path.includes('planId'));
             if (planIdError) {
                 return createErrorResponse('planId is required', 400);
             }
-            
+
             const errorMessage = validation.error.errors
                 .map(err => `${err.path.join('.')}: ${err.message}`)
                 .join(', ');
             return createErrorResponse(`Validation error: ${errorMessage}`, 400);
         }
-        
+
         requestBody = validation.data;
 
     } catch (jsonError) {
         // Handle malformed JSON with clear error message
         return createErrorResponse('Invalid JSON in request body', 400);
     }
-    
+
     try {
         // Create checkout session using validated parameters
         const sessionData = await createCheckoutSession({

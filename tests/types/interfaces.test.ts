@@ -4,7 +4,7 @@
  */
 import path from 'path';
 import { existsSync } from 'fs';
-import type * as Types from '../../src/types';
+import type * as Types from '@/types';
 
 describe('T002: Essential TypeScript Interfaces', () => {
     const typesPath = path.join(__dirname, '..', '..', 'src', 'types', 'index.ts');
@@ -14,7 +14,7 @@ describe('T002: Essential TypeScript Interfaces', () => {
     });
 
     test('should export Platform enum with required values', async () => {
-        const { Platform } = await import('../../src/types');
+        const { Platform } = await import('@/types');
 
         expect(Platform).toBeDefined();
         expect(Platform.INSTAGRAM).toBe('instagram');
@@ -25,7 +25,7 @@ describe('T002: Essential TypeScript Interfaces', () => {
     });
 
     test('should export Tone enum with required values', async () => {
-        const { Tone } = await import('../../src/types');
+        const { Tone } = await import('@/types');
 
         expect(Tone).toBeDefined();
         expect(Tone.PROFESSIONAL).toBe('professional');
@@ -36,7 +36,7 @@ describe('T002: Essential TypeScript Interfaces', () => {
     });
 
     test('should export CaptionRequest interface with required fields', async () => {
-        const types = await import('../../src/types');
+        const types = await import('@/types');
 
         // Test that we can create a valid CaptionRequest object
         const validRequest: Types.CaptionRequest = {
@@ -53,7 +53,7 @@ describe('T002: Essential TypeScript Interfaces', () => {
     });
 
     test('should export CaptionResponse interface with required fields', async () => {
-        const types = await import('../../src/types');
+        const types = await import('@/types');
 
         // Test that we can create a valid CaptionResponse object
         const validResponse: Types.CaptionResponse = {
@@ -72,7 +72,7 @@ describe('T002: Essential TypeScript Interfaces', () => {
     });
 
     test('should export Caption interface with required fields', async () => {
-        const types = await import('../../src/types');
+        const types = await import('@/types');
 
         // Test that we can create a valid Caption object
         const validCaption: Types.Caption = {
@@ -93,7 +93,7 @@ describe('T002: Essential TypeScript Interfaces', () => {
     });
 
     test('should export UsageSession interface with required fields', async () => {
-        const types = await import('../../src/types');
+        const types = await import('@/types');
 
         // Test that we can create a valid UsageSession object
         const validSession: Types.UsageSession = {

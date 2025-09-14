@@ -8,10 +8,10 @@
 "use client";
 
 import React, { useState, useCallback } from "react";
-import CaptionForm from "../components/CaptionForm";
-import CaptionResults from "../components/CaptionResults";
-import { RateLimit } from "../components/RateLimit";
-import { checkRateLimit, incrementUsage } from "../lib/rate-limit";
+import CaptionForm from "@/components/CaptionForm";
+import CaptionResults from "@/components/CaptionResults";
+import { RateLimit } from "@/components/RateLimit";
+import { checkRateLimit, incrementUsage } from "@/lib/rate-limit";
 
 export default function Home() {
   // State management for captions and errors
