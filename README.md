@@ -106,7 +106,7 @@ npm run dev
 
 ## 🧪 Testing
 
-This project follows test-driven development principles:
+This project follows test-driven development principles with comprehensive test coverage:
 
 ```bash
 # Run all tests
@@ -123,17 +123,26 @@ npm run test:e2e
 
 - **Unit Tests**: Components, utilities, and API routes
 - **Integration Tests**: API endpoints and data flow
-- **Contract Tests**: API schema validation
+- **Contract Tests**: API schema validation with proper mocking
 - **E2E Tests**: Complete user workflows
+
+### Testing Infrastructure
+
+The project includes specialized testing setup for Next.js API routes:
+
+- **whatwg-fetch polyfill**: Enables proper Request/Response handling in Jest environment
+- **Custom Jest setup**: Configured for Next.js server-side API testing
+- **Mock strategies**: Comprehensive mocking for external services (OpenAI, Stripe)
+- **TDD approach**: All tests written before implementation (red-green-refactor)
 
 ## 📁 Project Structure
 
 ```
 src/
 ├── app/                 # Next.js App Router
-│   ├── api/            # API routes (/generate, /upload)
+│   ├── api/            # API routes (/generate, /upload, /stripe)
 │   ├── components/     # React components
-│   ├── lib/            # Utility libraries
+│   ├── lib/            # Utility libraries (OpenAI, Stripe, validation)
 │   └── types/          # TypeScript definitions
 specs/
 ├── 001-develop-ai-caption/  # Spec-Driven Development files
@@ -142,6 +151,11 @@ specs/
 │   ├── tasks.md        # Development tasks
 │   └── contracts/      # API contracts
 tests/                   # Comprehensive test suite
+│   ├── api/            # Contract tests for API routes
+│   ├── components/     # Component unit tests
+│   └── setup/          # Test configuration and utilities
+jest.config.js          # Jest configuration for Next.js
+jest.setup.js           # Custom test environment setup (includes whatwg-fetch)
 ```
 
 ## 🎯 Development Principles
