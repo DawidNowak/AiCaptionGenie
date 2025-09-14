@@ -96,12 +96,12 @@ Next.js 14 App Router structure:
 
 ### Phase 4: Frontend Components (Day 2-3: 4-5 hours)
 
-- [ ] **T010** [P] Create main caption form in `src/components/CaptionForm.tsx`
+- [x] **T010** [P] Create main caption form in `src/components/CaptionForm.tsx`
 
   - **Success**: Handles text input, file upload, platform/tone selection with validation
   - **Time**: 45 min
 
-- [ ] **T011** [P] Create caption results display in `src/components/CaptionResults.tsx`
+- [x] **T011** [P] Create caption results display in `src/components/CaptionResults.tsx`
 
   - **Success**: Shows captions with copy buttons and basic download functionality
   - **Time**: 35 min
