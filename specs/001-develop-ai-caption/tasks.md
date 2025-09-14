@@ -132,7 +132,7 @@ Next.js 14 App Router structure:
   - **Success**: Creates checkout session with proper success/cancel URLs
   - **Time**: 30 min
 
-- [ ] **T017** Create POST /api/stripe/webhook in `src/app/api/stripe/webhook/route.ts`
+- [x] **T017** Create POST /api/stripe/webhook in `src/app/api/stripe/webhook/route.ts`
   - **Success**: Handles basic payment confirmations (minimal implementation)
   - **Time**: 25 min
 

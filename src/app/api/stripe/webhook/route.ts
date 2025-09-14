@@ -15,14 +15,14 @@ export async function POST(request: NextRequest) {
     try {
         // Get the webhook payload as text
         const payload = await request.text();
-        
+
         // Get the Stripe signature from headers
         const signature = request.headers.get('stripe-signature');
-        
+
         if (!signature) {
             return new Response(
                 JSON.stringify({ error: 'Missing webhook signature' }),
-                { 
+                {
                     status: 400,
                     headers: { 'Content-Type': 'application/json' }
                 }
@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
             if (error instanceof Error && error.message === 'Webhook signature verification failed') {
                 return new Response(
                     JSON.stringify({ error: 'Invalid webhook signature' }),
-                    { 
+                    {
                         status: 400,
                         headers: { 'Content-Type': 'application/json' }
                     }
@@ -55,7 +55,7 @@ export async function POST(request: NextRequest) {
                 // In production, this could update user status or send confirmation emails
                 console.log('Checkout session completed:', event.data.object.id);
                 break;
-            
+
             default:
                 // Log other events but don't process them for MVP
                 console.log('Received webhook event:', event.type);
@@ -64,11 +64,11 @@ export async function POST(request: NextRequest) {
 
         // Return success response
         return new Response(
-            JSON.stringify({ 
+            JSON.stringify({
                 received: true,
                 eventType: event.type
             }),
-            { 
+            {
                 status: 200,
                 headers: { 'Content-Type': 'application/json' }
             }
@@ -77,10 +77,10 @@ export async function POST(request: NextRequest) {
     } catch (error) {
         // Handle unexpected errors
         console.error('Webhook processing error:', error);
-        
+
         return new Response(
             JSON.stringify({ error: 'Internal server error' }),
-            { 
+            {
                 status: 500,
                 headers: { 'Content-Type': 'application/json' }
             }

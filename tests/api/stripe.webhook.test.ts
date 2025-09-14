@@ -69,12 +69,12 @@ describe('POST /api/stripe/webhook - Contract Test', () => {
         } as unknown as NextRequest;
 
         // Act - Import and call the webhook handler
-        const { POST } = await import('../../src/app/api/stripe/webhook/route');
+        const { POST } = await import('@/app/api/stripe/webhook/route');
         const response = await POST(mockRequest);
 
         // Assert - Verify successful processing
         expect(response.status).toBe(200);
-        
+
         const responseBody = await response.json();
         expect(responseBody).toEqual({
             received: true,
@@ -108,12 +108,12 @@ describe('POST /api/stripe/webhook - Contract Test', () => {
         } as unknown as NextRequest;
 
         // Act - Import and call the webhook handler
-        const { POST } = await import('../../src/app/api/stripe/webhook/route');
+        const { POST } = await import('@/app/api/stripe/webhook/route');
         const response = await POST(mockRequest);
 
         // Assert - Verify error handling
         expect(response.status).toBe(400);
-        
+
         const responseBody = await response.json();
         expect(responseBody).toEqual({
             error: 'Invalid webhook signature'
@@ -138,12 +138,12 @@ describe('POST /api/stripe/webhook - Contract Test', () => {
         } as unknown as NextRequest;
 
         // Act - Import and call the webhook handler
-        const { POST } = await import('../../src/app/api/stripe/webhook/route');
+        const { POST } = await import('@/app/api/stripe/webhook/route');
         const response = await POST(mockRequest);
 
         // Assert - Verify error handling
         expect(response.status).toBe(400);
-        
+
         const responseBody = await response.json();
         expect(responseBody).toEqual({
             error: 'Missing webhook signature'
@@ -182,12 +182,12 @@ describe('POST /api/stripe/webhook - Contract Test', () => {
         } as unknown as NextRequest;
 
         // Act - Import and call the webhook handler
-        const { POST } = await import('../../src/app/api/stripe/webhook/route');
+        const { POST } = await import('@/app/api/stripe/webhook/route');
         const response = await POST(mockRequest);
 
         // Assert - Verify successful processing (but no special handling)
         expect(response.status).toBe(200);
-        
+
         const responseBody = await response.json();
         expect(responseBody).toEqual({
             received: true,
@@ -215,12 +215,12 @@ describe('POST /api/stripe/webhook - Contract Test', () => {
         } as unknown as NextRequest;
 
         // Act - Import and call the webhook handler
-        const { POST } = await import('../../src/app/api/stripe/webhook/route');
+        const { POST } = await import('@/app/api/stripe/webhook/route');
         const response = await POST(mockRequest);
 
         // Assert - Verify error handling
         expect(response.status).toBe(500);
-        
+
         const responseBody = await response.json();
         expect(responseBody).toEqual({
             error: 'Internal server error'
