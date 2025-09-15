@@ -154,6 +154,24 @@ Please install typescript and @types/react by running: npm install --save-dev ty
 
 **Solution**: This occurs when TypeScript and its type definitions aren't available during the build process. The project configuration includes `typescript`, `@types/react`, `@types/react-dom`, and `@types/node` in the main dependencies to ensure they're available during Vercel builds.
 
+#### Jest Type Definition Errors
+
+```
+Type error: Cannot find type definition file for 'jest'.
+  The file is in the program because:
+    Entry point of type library 'jest' specified in compilerOptions
+```
+
+**Solution**: This occurs when Jest types are included in `tsconfig.json` but `@types/jest` is in devDependencies. Remove `"jest"` from the `types` array in `tsconfig.json` since Jest is not needed in production builds:
+
+```json
+{
+  "compilerOptions": {
+    "types": ["node"] // Remove "jest" from here
+  }
+}
+```
+
 #### Stripe Webhook Failures
 
 ```

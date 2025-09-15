@@ -18,20 +18,20 @@ describe('T001: Next.js 14 Project Setup', () => {
         // Verify Next.js 14
         expect(packageJson.dependencies?.next).toMatch(/^14\./);
 
-        // Verify TypeScript dependencies
-        expect(packageJson.devDependencies?.typescript).toBeDefined();
-        expect(packageJson.devDependencies?.['@types/node']).toBeDefined();
-        expect(packageJson.devDependencies?.['@types/react']).toBeDefined();
-        expect(packageJson.devDependencies?.['@types/react-dom']).toBeDefined();
+        // Verify TypeScript dependencies (moved to dependencies for Vercel build)
+        expect(packageJson.dependencies?.typescript).toBeDefined();
+        expect(packageJson.dependencies?.['@types/node']).toBeDefined();
+        expect(packageJson.dependencies?.['@types/react']).toBeDefined();
+        expect(packageJson.dependencies?.['@types/react-dom']).toBeDefined();
     });
 
     test('should have Tailwind CSS configured', () => {
         const packageJson = JSON.parse(readFileSync(path.join(projectRoot, 'package.json'), 'utf8'));
 
-        // Verify Tailwind CSS dependencies
-        expect(packageJson.devDependencies?.tailwindcss).toBeDefined();
-        expect(packageJson.devDependencies?.postcss).toBeDefined();
-        expect(packageJson.devDependencies?.autoprefixer).toBeDefined();
+        // Verify Tailwind CSS dependencies (moved to dependencies for Vercel build)
+        expect(packageJson.dependencies?.tailwindcss).toBeDefined();
+        expect(packageJson.dependencies?.postcss).toBeDefined();
+        expect(packageJson.dependencies?.autoprefixer).toBeDefined();
 
         // Verify Tailwind config exists
         const tailwindConfigPath = path.join(projectRoot, 'tailwind.config.ts');
