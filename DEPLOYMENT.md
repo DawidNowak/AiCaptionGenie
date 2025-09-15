@@ -118,6 +118,25 @@ Error: Environment variable OPENAI_API_KEY is not set
 
 **Solution**: Ensure all required environment variables are set in Vercel dashboard
 
+#### Module Resolution Errors
+
+```
+Module not found: Can't resolve '@/components/CaptionForm'
+```
+
+**Solution**: This indicates path alias resolution issues. The project includes webpack configuration in `next.config.mjs` to handle this. If you still see this error:
+
+1. Ensure you're using Node.js 18.17.0 or higher (specified in `package.json`)
+2. Check that `tsconfig.json` has the correct path mapping:
+   ```json
+   "baseUrl": ".",
+   "paths": {
+     "@/*": ["src/*"]
+   }
+   ```
+3. Verify the `next.config.mjs` includes the webpack alias configuration
+4. Try redeploying after clearing Vercel build cache
+
 #### Stripe Webhook Failures
 
 ```
