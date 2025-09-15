@@ -1,24 +1,21 @@
 /**
  * File Validation Utility for AI Caption Genie
- * Validates JPEG/PNG/GIF/MP4/MOV formats and 10MB size limit
+ * Validates JPEG/PNG/GIF formats and 10MB size limit
  */
 
 export interface FileValidationResult {
   isValid: boolean;
   error?: string;
-  fileType?: 'image' | 'video';
+  fileType?: 'image';
 }
 
-// Supported MIME types and their corresponding file types
+// Supported MIME types for images only
 const SUPPORTED_TYPES = {
   // Image types
   'image/jpeg': 'image',
   'image/jpg': 'image',
   'image/png': 'image',
   'image/gif': 'image',
-  // Video types
-  'video/mp4': 'video',
-  'video/quicktime': 'video', // .mov files
 } as const;
 
 // Maximum file size in bytes (10MB)
@@ -31,11 +28,11 @@ export function validateFile(file: File): FileValidationResult {
   // Check if file type is supported
   const mimeType = file.type.toLowerCase();
   const fileType = SUPPORTED_TYPES[mimeType as keyof typeof SUPPORTED_TYPES];
-  
+
   if (!fileType) {
     return {
       isValid: false,
-      error: 'File type not supported. Please upload JPEG, PNG, GIF, MP4, or MOV files.'
+      error: 'File type not supported. Please upload JPEG, PNG, or GIF files only.'
     };
   }
 

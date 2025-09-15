@@ -72,7 +72,7 @@ src/
 
 ### File Upload (/api/upload)
 
-- Support JPEG, PNG, GIF, MP4, MOV
+- Support JPEG, PNG, GIF
 - Validate file size (max 10MB)
 - Process images with Vision API
 - Handle errors gracefully

@@ -13,10 +13,10 @@
 2. Extract key concepts from description
    → Actors: social media creators, marketers, small business owners
    → Actions: generate captions, upload media, select tone/platform, copy/download
-   → Data: text descriptions, images/videos, captions with emojis/hashtags
+   → Data: text descriptions, images, captions with emojis/hashtags
    → Constraints: 3 free generations per day, MVP phase (no accounts)
 3. For each unclear aspect:
-   → File size/format limits: 10MB max, JPEG/PNG/GIF for images, MP4/MOV for videos ✓
+   → File size/format limits: 10MB max, JPEG/PNG/GIF for images ✓
    → Rate limiting: Client-side storage (cookies/localStorage) tracking, daily reset at midnight UTC ✓
 4. Fill User Scenarios & Testing section ✓
 5. Generate Functional Requirements ✓
@@ -53,7 +53,7 @@ A social media content creator wants to create engaging captions for their Insta
 
 ### Edge Cases
 
-- What happens when a user uploads an unsupported file format (not JPEG, PNG, GIF, MP4, or MOV) or file exceeding 10MB? System displays error message: "File must be JPEG, PNG, GIF, MP4, or MOV and under 10MB."
+- What happens when a user uploads an unsupported file format (not JPEG, PNG, or GIF) or file exceeding 10MB? System displays error message: "File must be JPEG, PNG, or GIF and under 10MB."
 - How does the system handle extremely vague or inappropriate post descriptions?
 - What occurs if the AI generation service is temporarily unavailable?
 - How does the system respond when users reach their 3-generation daily limit? System displays: "You've reached your 3 free daily generations. Upgrade to a paid plan for unlimited access."
@@ -64,7 +64,7 @@ A social media content creator wants to create engaging captions for their Insta
 ### Functional Requirements
 
 - **FR-001**: System MUST provide a single input form accepting either text description OR file upload for post content
-- **FR-002**: System MUST support image and video file uploads for content analysis
+- **FR-002**: System MUST support image file uploads for content analysis
 - **FR-003**: System MUST offer platform selection options for Instagram, TikTok, and LinkedIn
 - **FR-004**: System MUST provide tone selection options including casual, professional, and humorous
 - **FR-005**: System MUST generate 5-10 unique captions per request based on input and preferences
@@ -78,7 +78,7 @@ A social media content creator wants to create engaging captions for their Insta
 - **FR-013**: System MUST display upgrade messaging when daily limit is reached
 - **FR-014**: System MUST complete caption generation and display results within reasonable time for good user experience
 - **FR-015**: System MUST provide clear error messages for invalid inputs or system failures
-- **FR-016**: System MUST validate uploaded files for maximum size of 10MB and supported formats (JPEG, PNG, GIF for images; MP4, MOV for videos), displaying "File must be JPEG, PNG, GIF, MP4, or MOV and under 10MB" for invalid uploads
+- **FR-016**: System MUST validate uploaded files for maximum size of 10MB and supported formats (JPEG, PNG, GIF), displaying "File must be JPEG, PNG, or GIF and under 10MB" for invalid uploads
 - **FR-017**: System MUST track usage for rate limiting using client-side storage (browser cookies or localStorage) to count daily generations per device/browser, resetting counter at midnight UTC
 - **FR-018**: System MUST display upgrade message "You've reached your 3 free daily generations. Upgrade to a paid plan for unlimited access" when daily limit is exceeded
 

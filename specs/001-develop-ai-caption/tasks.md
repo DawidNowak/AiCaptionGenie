@@ -66,7 +66,7 @@ Next.js 14 App Router structure:
 
 - [x] **T004** [P] Create file validation utility in `src/lib/file-validation.ts`
 
-  - **Success**: Validates JPEG/PNG/GIF/MP4/MOV formats and 10MB size limit
+  - **Success**: Validates JPEG/PNG/GIF formats and 10MB size limit
   - **Time**: 25 min
 
 - [x] **T005** [P] Create rate limiting utility in `src/lib/rate-limit.ts`

@@ -210,14 +210,14 @@ const CaptionForm: React.FC<CaptionFormProps> = ({
             ref={fileInputRef}
             id="file-upload"
             type="file"
-            accept="image/jpeg,image/jpg,image/png,image/gif,video/mp4,video/quicktime"
+            accept="image/jpeg,image/jpg,image/png,image/gif"
             onChange={handleFileChange}
             className="w-full px-3 py-3 sm:py-2 text-base sm:text-sm border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 file:mr-3 sm:file:mr-4 file:py-2 file:px-3 sm:file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition-colors min-h-[44px]"
             disabled={isLoading}
             aria-describedby="file-help"
           />
           <p id="file-help" className="mt-1 text-xs text-gray-500">
-            Support: JPEG, PNG, GIF, MP4, MOV (max 10MB)
+            Support: JPEG, PNG, GIF (max 10MB)
           </p>
         </div>
 

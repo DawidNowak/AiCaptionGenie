@@ -13,7 +13,7 @@ describe('File Validation Utility', () => {
         type: 'image/jpeg',
         lastModified: Date.now(),
       });
-      
+
       // Simulate file size under 10MB (9MB)
       Object.defineProperty(mockFile, 'size', {
         value: 9 * 1024 * 1024,
@@ -32,7 +32,7 @@ describe('File Validation Utility', () => {
         type: 'image/png',
         lastModified: Date.now(),
       });
-      
+
       Object.defineProperty(mockFile, 'size', {
         value: 5 * 1024 * 1024, // 5MB
         writable: false
@@ -50,7 +50,7 @@ describe('File Validation Utility', () => {
         type: 'image/gif',
         lastModified: Date.now(),
       });
-      
+
       Object.defineProperty(mockFile, 'size', {
         value: 3 * 1024 * 1024, // 3MB
         writable: false
@@ -63,12 +63,12 @@ describe('File Validation Utility', () => {
       expect(result.fileType).toBe('image');
     });
 
-    it('should accept valid MP4 files under 10MB', () => {
+    it('should reject MP4 video files (no longer supported)', () => {
       const mockFile = new File(['test content'], 'test.mp4', {
         type: 'video/mp4',
         lastModified: Date.now(),
       });
-      
+
       Object.defineProperty(mockFile, 'size', {
         value: 8 * 1024 * 1024, // 8MB
         writable: false
@@ -76,17 +76,17 @@ describe('File Validation Utility', () => {
 
       const result = validateFile(mockFile);
 
-      expect(result.isValid).toBe(true);
-      expect(result.error).toBeUndefined();
-      expect(result.fileType).toBe('video');
+      expect(result.isValid).toBe(false);
+      expect(result.error).toBe('File type not supported. Please upload JPEG, PNG, or GIF files only.');
+      expect(result.fileType).toBeUndefined();
     });
 
-    it('should accept valid MOV files under 10MB', () => {
+    it('should reject MOV video files (no longer supported)', () => {
       const mockFile = new File(['test content'], 'test.mov', {
         type: 'video/quicktime',
         lastModified: Date.now(),
       });
-      
+
       Object.defineProperty(mockFile, 'size', {
         value: 7 * 1024 * 1024, // 7MB
         writable: false
@@ -94,9 +94,9 @@ describe('File Validation Utility', () => {
 
       const result = validateFile(mockFile);
 
-      expect(result.isValid).toBe(true);
-      expect(result.error).toBeUndefined();
-      expect(result.fileType).toBe('video');
+      expect(result.isValid).toBe(false);
+      expect(result.error).toBe('File type not supported. Please upload JPEG, PNG, or GIF files only.');
+      expect(result.fileType).toBeUndefined();
     });
 
     it('should reject files over 10MB with user-friendly message', () => {
@@ -104,7 +104,7 @@ describe('File Validation Utility', () => {
         type: 'image/jpeg',
         lastModified: Date.now(),
       });
-      
+
       Object.defineProperty(mockFile, 'size', {
         value: 15 * 1024 * 1024, // 15MB
         writable: false
@@ -122,7 +122,7 @@ describe('File Validation Utility', () => {
         type: 'application/pdf',
         lastModified: Date.now(),
       });
-      
+
       Object.defineProperty(mockFile, 'size', {
         value: 1 * 1024 * 1024, // 1MB
         writable: false
@@ -131,7 +131,7 @@ describe('File Validation Utility', () => {
       const result = validateFile(mockFile);
 
       expect(result.isValid).toBe(false);
-      expect(result.error).toBe('File type not supported. Please upload JPEG, PNG, GIF, MP4, or MOV files.');
+      expect(result.error).toBe('File type not supported. Please upload JPEG, PNG, or GIF files only.');
       expect(result.fileType).toBeUndefined();
     });
 
@@ -140,7 +140,7 @@ describe('File Validation Utility', () => {
         type: 'image/jpeg',
         lastModified: Date.now(),
       });
-      
+
       Object.defineProperty(mockFile, 'size', {
         value: 2 * 1024 * 1024, // 2MB
         writable: false
@@ -158,7 +158,7 @@ describe('File Validation Utility', () => {
         type: '',
         lastModified: Date.now(),
       });
-      
+
       Object.defineProperty(mockFile, 'size', {
         value: 1 * 1024 * 1024, // 1MB
         writable: false
@@ -167,7 +167,7 @@ describe('File Validation Utility', () => {
       const result = validateFile(mockFile);
 
       expect(result.isValid).toBe(false);
-      expect(result.error).toBe('File type not supported. Please upload JPEG, PNG, GIF, MP4, or MOV files.');
+      expect(result.error).toBe('File type not supported. Please upload JPEG, PNG, or GIF files only.');
       expect(result.fileType).toBeUndefined();
     });
 
@@ -176,7 +176,7 @@ describe('File Validation Utility', () => {
         type: 'image/jpeg',
         lastModified: Date.now(),
       });
-      
+
       Object.defineProperty(mockFile, 'size', {
         value: 10 * 1024 * 1024, // exactly 10MB
         writable: false
@@ -200,7 +200,7 @@ describe('File Validation Utility', () => {
 
       expect(result).toHaveProperty('isValid');
       expect(typeof result.isValid).toBe('boolean');
-      expect(result.fileType).toMatch(/image|video/);
+      expect(result.fileType).toBe('image');
     });
   });
 });

@@ -63,7 +63,7 @@ describe('POST /api/upload - Contract Test', () => {
         // Arrange - Mock file validation to return format error
         mockValidateFile.mockReturnValue({
             isValid: false,
-            error: 'File type not supported. Please upload JPEG, PNG, GIF, MP4, or MOV files.'
+            error: 'File type not supported. Please upload JPEG, PNG, or GIF files only.'
         });
 
         const formData = new FormData();
@@ -87,7 +87,7 @@ describe('POST /api/upload - Contract Test', () => {
         // Assert - Should return 400 with appropriate error message
         expect(response.status).toBe(400);
         const responseData = await response.json();
-        expect(responseData.error).toBe('File type not supported. Please upload JPEG, PNG, GIF, MP4, or MOV files.');
+        expect(responseData.error).toBe('File type not supported. Please upload JPEG, PNG, or GIF files only.');
         expect(mockValidateFile).toHaveBeenCalledWith(testFile);
     });
 
@@ -185,11 +185,11 @@ describe('POST /api/upload - Contract Test', () => {
         // Arrange - Mock successful file validation
         mockValidateFile.mockReturnValue({
             isValid: true,
-            fileType: 'video'
+            fileType: 'image'
         });
 
         const formData = new FormData();
-        const testFile = new File(['video content'], 'test-video.mp4', { type: 'video/mp4' });
+        const testFile = new File(['image content'], 'test-image.jpg', { type: 'image/jpeg' });
         formData.append('file', testFile);
         // Missing platform and tone
 

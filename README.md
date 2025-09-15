@@ -2,7 +2,7 @@
 
 > **Built using Spec-Driven Development with [GitHub Spec Kit](https://github.com/github/spec-kit)**
 
-AI Caption Genie is a Next.js 14 web application that generates engaging social media captions using OpenAI APIs. Users can input text descriptions or upload images/videos to receive 5-10 platform-optimized captions with emojis, CTAs, and hashtags. This project demonstrates the power of **Spec-Driven Development** methodology, where specifications drive implementation rather than code driving specifications.
+AI Caption Genie is a Next.js 14 web application that generates engaging social media captions using OpenAI APIs. Users can input text descriptions or upload images to receive 5-10 platform-optimized captions with emojis, CTAs, and hashtags. This project demonstrates the power of **Spec-Driven Development** methodology, where specifications drive implementation rather than code driving specifications.
 
 ## 🤔 What is Spec-Driven Development?
 
@@ -21,7 +21,7 @@ AI Caption Genie helps social media content creators, marketers, and small busin
 
 ### ✨ Key Features
 
-- **Text or Media Input**: Describe your post theme or upload images/videos (JPEG, PNG, GIF, MP4, MOV up to 10MB)
+- **Text or Media Input**: Describe your post theme or upload images (JPEG, PNG, GIF up to 10MB)
 - **Platform-Specific**: Optimized captions for Instagram, TikTok, LinkedIn with platform-appropriate formatting
 - **Tone Selection**: Choose from casual, professional, humorous tones for brand consistency
 - **Rich Output**: 5-10 unique captions with relevant emojis, call-to-actions, and 3-5 hashtags
@@ -234,7 +234,7 @@ The skipped tests are due to stricter request interception in WebKit/Safari brow
 │   ├── 📁 app/                      # Next.js 14 App Router
 │   │   ├── 📁 api/                  # API routes
 │   │   │   ├── 📁 generate/         # POST /api/generate - Text-based caption generation
-│   │   │   ├── 📁 upload/           # POST /api/upload - Image/video caption generation
+│   │   │   ├── 📁 upload/           # POST /api/upload - Image caption generation
 │   │   │   └── 📁 stripe/           # Stripe payment integration
 │   │   │       ├── 📁 create-checkout/  # Payment session creation
 │   │   │       └── 📁 webhook/      # Stripe webhook handling
@@ -349,8 +349,8 @@ This project demonstrates how Spec-Driven Development enables:
 
 - **Rate Limiting**: 3 free generations per day using localStorage (resets on browser clear)
 - **Anonymous Usage**: No user accounts or persistent data storage
-- **File Size**: 10MB upload limit for images/videos
-- **Supported Formats**: JPEG, PNG, GIF, MP4, MOV only
+- **File Size**: 10MB upload limit for images
+- **Supported Formats**: JPEG, PNG, GIF only
 - **Stripe Integration**: Payment flow implemented but not fully activated
 
 ## 🔮 Future Enhancements

@@ -212,7 +212,7 @@ describe('Error Handling - API Routes', () => {
             // Mock file validation to return format error
             mockValidateFile.mockReturnValue({
                 isValid: false,
-                error: 'File type not supported. Please upload JPEG, PNG, GIF, MP4, or MOV files.'
+                error: 'File type not supported. Please upload JPEG, PNG, or GIF files only.'
             });
 
             // Act
@@ -221,7 +221,7 @@ describe('Error Handling - API Routes', () => {
 
             // Assert
             expect(response.status).toBe(400);
-            expect(responseData.error).toBe('File type not supported. Please upload JPEG, PNG, GIF, MP4, or MOV files.');
+            expect(responseData.error).toBe('File type not supported. Please upload JPEG, PNG, or GIF files only.');
         });
 
         it('should return user-friendly error for OpenAI Vision API errors', async () => {

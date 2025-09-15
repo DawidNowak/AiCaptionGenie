@@ -101,8 +101,8 @@ export default function Home() {
               Create Your Caption
             </h2>
             <p className="text-sm text-gray-600">
-              Describe your content or upload an image/video to generate
-              engaging captions.
+              Describe your content or upload an image to generate engaging
+              captions.
             </p>
             <CaptionForm
               onCaptionsGenerated={handleCaptionsGenerated}

@@ -88,18 +88,15 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             return createErrorResponse(fileValidationResult.error!, 400);
         }
 
-        // Create caption request object
+        // Create caption request object for image processing
         const captionRequest: CaptionRequest = {
-            content: `Uploaded ${fileValidationResult.fileType} file: ${file.name}`,
+            content: `Uploaded image file: ${file.name}`,
             platform: platform as Platform,
             tone: tone as Tone
         };
 
         // Generate captions using Vision API integration
-        // Convert file to base64 for Vision API
         const imageUrl = await fileToBase64(file);
-
-        // Call the generateImageCaptions function with imageUrl
         const captions = await generateImageCaptions({
             ...captionRequest,
             imageUrl
@@ -114,13 +111,13 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             tone: captionRequest.tone
         };
 
-        // Add metadata for test expectations (will extend interface later if needed)
+        // Add metadata for test expectations
         const responseWithMetadata = {
             ...response,
             metadata: {
                 platform: captionRequest.platform,
                 tone: captionRequest.tone,
-                contentType: fileValidationResult.fileType,
+                contentType: 'image',
                 totalCaptions: captions.length,
                 userAgent: request.headers.get('user-agent') || undefined
             }

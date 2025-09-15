@@ -97,7 +97,7 @@ describe("CaptionForm", () => {
       validateFile.mockReturnValue({
         isValid: false,
         error:
-          "File type not supported. Please upload JPEG, PNG, GIF, MP4, or MOV files.",
+          "File type not supported. Please upload JPEG, PNG, or GIF files only.",
       });
 
       render(<CaptionForm />);

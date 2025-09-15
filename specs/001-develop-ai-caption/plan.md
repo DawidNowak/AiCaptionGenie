@@ -30,7 +30,9 @@
 
 ## Summary
 
-AI Caption Genie MVP is a single-page web application that generates 5-10 platform-optimized social media captions with emojis, CTAs, and hashtags. Users input text descriptions or upload images/videos, select platform (Instagram/TikTok/LinkedIn) and tone (casual/professional/humorous), then receive generated captions they can copy or download. The MVP uses anonymous usage with 3 free generations per day tracked via client-side storage, encouraging upgrade to paid plans via Stripe. Built with Next.js 14, TypeScript, Tailwind CSS, OpenAI GPT-4o-mini and Vision APIs, deployed on Vercel with no external database for rapid development.
+AI Caption Genie MVP is a single-page web application that generates 5-10 platform-optimized social media captions with emojis, CTAs, and hashtags. Users input text descriptions or upload images, select platform (Instagram/TikTok/LinkedIn) and tone (casual/professional/humorous), then receive generated captions they can copy or download. The MVP uses anonymous usage with 3 free generations per day tracked via client-side storage, encouraging upgrade to paid plans via Stripe. Built with Next.js 14, TypeScript, Tailwind CSS, OpenAI GPT-4o-mini and Vision APIs, deployed on Vercel with no external database for rapid development.
+
+**Implementation Note**: Video upload support was removed during development due to OpenAI Vision API limitations (images only). This provides a cleaner user experience rather than accepting files that cannot be properly processed.
 
 ## Technical Context
 
@@ -133,7 +135,7 @@ src/
 
 **NEEDS CLARIFICATION Resolution**:
 
-- File format support: JPEG, PNG, GIF (images), MP4, MOV (videos) ✓
+- File format support: JPEG, PNG, GIF (images only) ✓
 - Rate limiting: Client-side localStorage with daily UTC reset ✓
 - Payment integration: Stripe checkout flow ✓
 - AI models: GPT-4o-mini for text, Vision API for images ✓
