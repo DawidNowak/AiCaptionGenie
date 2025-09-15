@@ -13,10 +13,32 @@
 
 import React, { useState } from "react";
 
-interface CaptionResultsProps {
-  /** Array of caption strings to display */
-  captions?: string[];
+// Enhanced caption interface for API responses
+interface EnhancedCaption {
+  id: string;
+  text: string;
+  callToAction: string;
+  hashtags: string[];
+  platform: string;
+  tone: string;
+  emojiCount: number;
+  characterCount: number;
 }
+
+interface CaptionResultsProps {
+  /** Array of caption strings or enhanced caption objects to display */
+  captions?: (string | EnhancedCaption)[];
+}
+
+/**
+ * Helper function to extract caption text from either string or enhanced caption object
+ */
+const getCaptionText = (caption: string | EnhancedCaption): string => {
+  if (typeof caption === "string") {
+    return caption;
+  }
+  return caption.text;
+};
 
 const CaptionResults: React.FC<CaptionResultsProps> = ({ captions }) => {
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
@@ -64,7 +86,7 @@ const CaptionResults: React.FC<CaptionResultsProps> = ({ captions }) => {
    */
   const handleDownloadAll = () => {
     const timestamp = new Date().toISOString().split("T")[0];
-    const content = captions.join("\n\n");
+    const content = captions.map(getCaptionText).join("\n\n");
     const blob = new Blob([content], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
 
@@ -95,12 +117,12 @@ const CaptionResults: React.FC<CaptionResultsProps> = ({ captions }) => {
               <div className="flex flex-col space-y-3">
                 {/* Caption Text - Mobile optimized */}
                 <p className="text-gray-800 leading-relaxed whitespace-pre-wrap text-sm sm:text-base break-words">
-                  {caption}
+                  {getCaptionText(caption)}
                 </p>
 
                 {/* Copy Button with Visual Feedback - Touch friendly */}
                 <button
-                  onClick={() => handleCopy(caption, index)}
+                  onClick={() => handleCopy(getCaptionText(caption), index)}
                   aria-label={`Copy caption ${index + 1} to clipboard`}
                   className={`self-start px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all duration-200 text-sm font-medium min-h-[44px] min-w-[80px] ${
                     copiedIndex === index
