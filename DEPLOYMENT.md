@@ -145,6 +145,15 @@ Error: Cannot find module 'tailwindcss'
 
 **Solution**: This occurs when CSS build dependencies aren't available during the build process. The project configuration includes `tailwindcss`, `postcss`, and `autoprefixer` in the main dependencies (not devDependencies) to ensure they're available during Vercel builds.
 
+#### TypeScript Build Errors
+
+```
+It looks like you're trying to use TypeScript but do not have the required package(s) installed.
+Please install typescript and @types/react by running: npm install --save-dev typescript @types/react
+```
+
+**Solution**: This occurs when TypeScript and its type definitions aren't available during the build process. The project configuration includes `typescript`, `@types/react`, `@types/react-dom`, and `@types/node` in the main dependencies to ensure they're available during Vercel builds.
+
 #### Stripe Webhook Failures
 
 ```
