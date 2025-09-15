@@ -26,11 +26,11 @@ export function RateLimit({
   // Don't show rate limits for subscribed users
   if (isSubscribed) {
     return (
-      <div className="bg-green-50 rounded-lg p-4 border border-green-200 w-full max-w-md">
+      <div className="bg-green-50 rounded-lg p-3 sm:p-4 border border-green-200 w-full max-w-sm sm:max-w-md">
         <div className="text-sm font-medium text-green-700 mb-2">
           ✨ Premium Active
         </div>
-        <div className="text-sm text-green-600">
+        <div className="text-xs sm:text-sm text-green-600">
           Unlimited caption generations
         </div>
       </div>
@@ -40,8 +40,8 @@ export function RateLimit({
   // Show loading state to prevent layout shift
   if (!usageStatus) {
     return (
-      <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-        <div className="h-5 w-48 bg-gray-200 rounded animate-pulse" />
+      <div className="bg-gray-50 rounded-lg p-3 sm:p-4 border border-gray-200 w-full max-w-sm sm:max-w-md">
+        <div className="h-4 sm:h-5 w-32 sm:w-48 bg-gray-200 rounded animate-pulse" />
       </div>
     );
   }
@@ -50,12 +50,12 @@ export function RateLimit({
   const totalLimit = used + remaining;
 
   return (
-    <div className="bg-gray-50 rounded-lg p-4 border border-gray-200 w-full max-w-md">
+    <div className="bg-gray-50 rounded-lg p-3 sm:p-4 border border-gray-200 w-full max-w-sm sm:max-w-md">
       {/* Usage Counter - Always visible for transparency */}
       <div
         role="status"
         aria-live="polite"
-        className="text-sm font-medium text-gray-700 mb-3"
+        className="text-xs sm:text-sm font-medium text-gray-700 mb-3"
       >
         <span className="text-blue-600">{used}</span>
         <span className="text-gray-500">/{totalLimit}</span>
@@ -78,7 +78,7 @@ export function RateLimit({
         <div className="space-y-3">
           <div
             role="alert"
-            className="text-sm text-amber-800 bg-amber-50 p-3 rounded-md border border-amber-200"
+            className="text-xs sm:text-sm text-amber-800 bg-amber-50 p-2 sm:p-3 rounded-md border border-amber-200"
           >
             <strong>Daily limit reached!</strong> You've used all 3 free
             generations today. Upgrade to a paid plan for unlimited access.
@@ -86,7 +86,7 @@ export function RateLimit({
           <button
             type="button"
             aria-label="Upgrade to premium plan for unlimited caption generations"
-            className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md text-sm transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
+            className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-medium py-2 px-4 rounded-md text-sm transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 min-h-[44px]"
           >
             Upgrade to Premium
           </button>

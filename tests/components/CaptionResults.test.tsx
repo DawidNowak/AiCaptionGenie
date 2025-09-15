@@ -64,14 +64,14 @@ describe("CaptionResults", () => {
     it("should display Download All button when captions exist", () => {
       render(<CaptionResults captions={mockCaptions} />);
 
-      expect(screen.getByText("📥 Download All")).toBeInTheDocument();
+      expect(screen.getByText("📥 Download All Captions")).toBeInTheDocument();
     });
 
     it("should have mobile-friendly responsive layout", () => {
       render(<CaptionResults captions={mockCaptions} />);
 
       const container = screen.getByRole("list");
-      expect(container).toHaveClass("grid", "gap-4");
+      expect(container).toHaveClass("space-y-3", "sm:space-y-4");
     });
   });
 
@@ -116,7 +116,7 @@ describe("CaptionResults", () => {
       fireEvent.click(copyButtons[0]);
 
       await waitFor(() => {
-        expect(screen.getByText("✗ Copy failed")).toBeInTheDocument();
+        expect(screen.getByText("✗ Failed")).toBeInTheDocument();
       });
     });
   });
@@ -131,7 +131,7 @@ describe("CaptionResults", () => {
     it("should create and download text file when Download All is clicked", async () => {
       render(<CaptionResults captions={mockCaptions} />);
 
-      const downloadButton = screen.getByText("📥 Download All");
+      const downloadButton = screen.getByText("📥 Download All Captions");
       fireEvent.click(downloadButton);
 
       await waitFor(() => {
@@ -145,7 +145,7 @@ describe("CaptionResults", () => {
     it("should create blob with correct content format", async () => {
       render(<CaptionResults captions={mockCaptions} />);
 
-      const downloadButton = screen.getByText("📥 Download All");
+      const downloadButton = screen.getByText("📥 Download All Captions");
       fireEvent.click(downloadButton);
 
       await waitFor(() => {
@@ -159,7 +159,7 @@ describe("CaptionResults", () => {
     it("should cleanup URL after download", async () => {
       render(<CaptionResults captions={mockCaptions} />);
 
-      const downloadButton = screen.getByText("📥 Download All");
+      const downloadButton = screen.getByText("📥 Download All Captions");
       fireEvent.click(downloadButton);
 
       await waitFor(() => {

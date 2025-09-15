@@ -158,16 +158,16 @@ const CaptionForm: React.FC<CaptionFormProps> = ({
   };
 
   return (
-    <div className="w-full max-w-lg mx-auto">
+    <div className="w-full max-w-2xl mx-auto">
       <form
         onSubmit={handleSubmit}
-        className="space-y-6 p-4 md:p-6"
+        className="space-y-4 sm:space-y-6 p-3 sm:p-4 md:p-6"
         role="form"
       >
-        {/* Error Display */}
+        {/* Error Display - Mobile optimized */}
         {error && (
           <div
-            className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md text-sm"
+            className="bg-red-50 border border-red-200 text-red-700 px-3 sm:px-4 py-3 rounded-md text-sm"
             role="alert"
             aria-live="polite"
           >
@@ -175,7 +175,7 @@ const CaptionForm: React.FC<CaptionFormProps> = ({
           </div>
         )}
 
-        {/* Text Input */}
+        {/* Text Input - Touch friendly */}
         <div>
           <label
             htmlFor="post-theme"
@@ -188,8 +188,8 @@ const CaptionForm: React.FC<CaptionFormProps> = ({
             value={textContent}
             onChange={(e) => setTextContent(e.target.value)}
             placeholder="Describe your post theme (e.g., 'launching eco-friendly skincare line, targeting millennials')"
-            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none transition-colors"
-            rows={3}
+            className="w-full px-3 py-3 sm:py-2 text-base sm:text-sm border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none transition-colors min-h-[44px]"
+            rows={4}
             disabled={isLoading}
             aria-describedby="theme-help"
           />
@@ -198,7 +198,7 @@ const CaptionForm: React.FC<CaptionFormProps> = ({
           </p>
         </div>
 
-        {/* File Upload */}
+        {/* File Upload - Touch optimized */}
         <div>
           <label
             htmlFor="file-upload"
@@ -212,7 +212,7 @@ const CaptionForm: React.FC<CaptionFormProps> = ({
             type="file"
             accept="image/jpeg,image/jpg,image/png,image/gif,video/mp4,video/quicktime"
             onChange={handleFileChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition-colors"
+            className="w-full px-3 py-3 sm:py-2 text-base sm:text-sm border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 file:mr-3 sm:file:mr-4 file:py-2 file:px-3 sm:file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition-colors min-h-[44px]"
             disabled={isLoading}
             aria-describedby="file-help"
           />
@@ -235,7 +235,7 @@ const CaptionForm: React.FC<CaptionFormProps> = ({
               id="platform"
               value={platform}
               onChange={(e) => setPlatform(e.target.value as Platform)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+              className="w-full px-3 py-3 sm:py-2 text-base sm:text-sm border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors min-h-[44px]"
               disabled={isLoading}
               aria-describedby="platform-help"
             >
@@ -262,7 +262,7 @@ const CaptionForm: React.FC<CaptionFormProps> = ({
               id="tone"
               value={tone}
               onChange={(e) => setTone(e.target.value as Tone)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+              className="w-full px-3 py-3 sm:py-2 text-base sm:text-sm border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors min-h-[44px]"
               disabled={isLoading}
               aria-describedby="tone-help"
             >
@@ -278,11 +278,11 @@ const CaptionForm: React.FC<CaptionFormProps> = ({
           </div>
         </div>
 
-        {/* Submit Button */}
+        {/* Submit Button - Touch friendly (min 44x44px) */}
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 disabled:cursor-not-allowed text-white font-medium py-3 px-4 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 text-base"
+          className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 disabled:cursor-not-allowed text-white font-medium py-3 px-4 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 text-base min-h-[44px] min-w-[44px]"
           aria-describedby="submit-help"
         >
           {isLoading ? (

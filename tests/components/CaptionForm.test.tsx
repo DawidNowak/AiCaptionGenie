@@ -60,10 +60,10 @@ describe("CaptionForm", () => {
       render(<CaptionForm />);
 
       const form = screen.getByRole("form");
-      expect(form).toHaveClass("space-y-6");
+      expect(form).toHaveClass("space-y-4", "sm:space-y-6");
 
       const textInput = screen.getByLabelText(/post theme/i);
-      expect(textInput).toHaveClass("w-full", "px-3", "py-2");
+      expect(textInput).toHaveClass("w-full", "px-3", "py-3", "sm:py-2");
     });
 
     test("includes proper ARIA labels for accessibility", () => {
