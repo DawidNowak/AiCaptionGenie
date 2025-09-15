@@ -14,7 +14,7 @@ function getOpenAIClient(): OpenAI {
   if (!apiKey) {
     throw new Error('OpenAI API key is not configured');
   }
-  
+
   if (!openaiClient) {
     openaiClient = new OpenAI({ apiKey });
   }
@@ -32,26 +32,13 @@ export function resetOpenAIClient(): void {
 export async function generateCaptions(request: CaptionRequest): Promise<string[]> {
   try {
     const client = getOpenAIClient();
-    
-    const systemPrompt = `You are a social media caption generator. Generate 5-10 engaging captions for ${request.platform} in a ${request.tone} tone. 
 
-Guidelines:
-- Include relevant emojis and hashtags
-- Keep within platform character limits
-- Make captions engaging and shareable
-- Include call-to-action when appropriate
-- Return as a JSON array of strings
+    // Optimized concise system prompt (under 100 tokens)
+    const systemPrompt = `Generate 5-10 ${request.platform} captions in ${request.tone} tone. Include emojis, CTAs, hashtags. Return JSON array.`;
 
-Platform-specific requirements:
-- Instagram: Up to 2,200 characters, use hashtags
-- Twitter: Up to 280 characters, concise
-- Facebook: Conversational, up to 2,000 characters
-- LinkedIn: Professional, up to 3,000 characters
-- TikTok: Fun, trendy, up to 2,200 characters`;
-
-    const userPrompt = `Generate captions for: "${request.content}"${
-      request.imageDescription ? `\nImage description: ${request.imageDescription}` : ''
-    }`;
+    // Concise user prompt
+    const userPrompt = `Content: "${request.content}"${request.imageDescription ? ` Image: ${request.imageDescription}` : ''
+      }`;
 
     const response = await client.chat.completions.create({
       model: 'gpt-4o-mini',
@@ -60,7 +47,7 @@ Platform-specific requirements:
         { role: 'user', content: userPrompt }
       ],
       temperature: 0.8,
-      max_tokens: 1000
+      max_tokens: 300 // Reduced from 1000 for cost efficiency
     });
 
     const content = response.choices[0]?.message?.content;
@@ -94,23 +81,15 @@ Platform-specific requirements:
 export async function generateImageCaptions(request: CaptionRequest & { imageUrl?: string }): Promise<string[]> {
   try {
     const client = getOpenAIClient();
-    
-    const systemPrompt = `You are a social media caption generator. Analyze the image and generate 5-10 engaging captions for ${request.platform} in a ${request.tone} tone.
 
-Guidelines:
-- Describe what you see in the image
-- Include relevant emojis and hashtags
-- Keep within platform character limits
-- Make captions engaging and shareable
-- Include call-to-action when appropriate
-- Return as a JSON array of strings`;
+    // Ultra-concise system prompt for Vision API (under 50 tokens)
+    const systemPrompt = `Generate 5-10 ${request.platform} captions for image in ${request.tone} tone. Include emojis, CTAs, hashtags. Return JSON array.`;
 
     const userContent: any[] = [
       {
         type: 'text',
-        text: `Generate captions for: "${request.content}"${
-          request.imageDescription ? `\nContext: ${request.imageDescription}` : ''
-        }`
+        text: `Content: "${request.content}"${request.imageDescription ? ` Context: ${request.imageDescription}` : ''
+          }`
       }
     ];
 
@@ -119,7 +98,8 @@ Guidelines:
       userContent.push({
         type: 'image_url',
         image_url: {
-          url: request.imageUrl
+          url: request.imageUrl,
+          detail: 'low' // Use low detail for cost efficiency
         }
       });
     }
@@ -131,7 +111,7 @@ Guidelines:
         { role: 'user', content: userContent }
       ],
       temperature: 0.8,
-      max_tokens: 1000
+      max_tokens: 300 // Reduced from 1000 for cost efficiency
     });
 
     const content = response.choices[0]?.message?.content;

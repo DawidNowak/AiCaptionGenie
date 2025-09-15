@@ -59,37 +59,6 @@ async function fileToBase64(file: File): Promise<string> {
     return `data:${file.type};base64,${base64}`;
 }
 
-/**
- * Enhanced generateImageCaptions that accepts File objects
- * Converts file to base64 and calls the existing function
- * This matches the test contract expectations
- */
-async function generateCaptionsFromFile(
-    request: CaptionRequest,
-    file: File
-): Promise<string[]> {
-    // Convert file to base64 data URL
-    const imageUrl = await fileToBase64(file);
-
-    // Call the existing generateImageCaptions function with imageUrl
-    return generateImageCaptions({
-        ...request,
-        imageUrl
-    });
-}
-
-// Mock-compatible wrapper for generateImageCaptions
-// This ensures the test mocks work correctly by intercepting the call
-async function generateImageCaptionsWithFile(
-    request: CaptionRequest,
-    file: File
-): Promise<string[]> {
-    // This function signature matches what the test expects
-    // In a real scenario, this would be the actual implementation
-    // For now, delegate to our internal function
-    return generateCaptionsFromFile(request, file);
-}
-
 export async function POST(request: NextRequest): Promise<NextResponse> {
     try {
         // Parse FormData from request
@@ -127,9 +96,14 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         };
 
         // Generate captions using Vision API integration
-        // Call the mocked function that the test expects (with 2 parameters)
-        // This will be intercepted by the test mock
-        const captions = await (generateImageCaptions as any)(captionRequest, file);
+        // Convert file to base64 for Vision API
+        const imageUrl = await fileToBase64(file);
+
+        // Call the generateImageCaptions function with imageUrl
+        const captions = await generateImageCaptions({
+            ...captionRequest,
+            imageUrl
+        });
 
         // Create response object matching expected format from types
         const response: CaptionResponse = {

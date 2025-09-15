@@ -159,7 +159,7 @@ Next.js 14 App Router structure:
   - **Success**: App works on mobile devices with touch-friendly interface
   - **Time**: 30 min
 
-- [ ] **T022** [P] Optimize OpenAI prompts for cost efficiency
+- [x] **T022** [P] Optimize OpenAI prompts for cost efficiency
 
   - **Success**: Prompts generate quality captions within token budget
   - **Time**: 25 min

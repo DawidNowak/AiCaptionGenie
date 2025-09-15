@@ -68,3 +68,40 @@ global.FormData = class FormData {
     return this.entries();
   }
 };
+
+// Enhanced File polyfill for Jest
+// Fixes File.arrayBuffer() and other methods in test environment
+global.File = class File {
+  constructor(fileBits, fileName, options = {}) {
+    this.name = fileName;
+    this.type = options.type || "";
+    this.lastModified = options.lastModified || Date.now();
+    this.size = fileBits.reduce((size, bit) => size + (bit.length || 0), 0);
+    this._bits = fileBits;
+  }
+
+  async arrayBuffer() {
+    // Convert file bits to ArrayBuffer for test environment
+    const content = this._bits.join("");
+    const buffer = new ArrayBuffer(content.length);
+    const view = new Uint8Array(buffer);
+    for (let i = 0; i < content.length; i++) {
+      view[i] = content.charCodeAt(i);
+    }
+    return buffer;
+  }
+
+  async text() {
+    return this._bits.join("");
+  }
+
+  stream() {
+    throw new Error("File.stream() not implemented in test environment");
+  }
+
+  slice(start, end, contentType) {
+    const content = this._bits.join("");
+    const sliced = content.slice(start, end);
+    return new File([sliced], this.name, { type: contentType || this.type });
+  }
+};
