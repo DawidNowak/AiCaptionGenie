@@ -164,7 +164,7 @@ Next.js 14 App Router structure:
   - **Success**: Prompts generate quality captions within token budget
   - **Time**: 25 min
 
-- [ ] **T023** Create end-to-end flow test in `tests/e2e/caption-flow.spec.ts`
+- [x] **T023** Create end-to-end flow test in `tests/e2e/caption-flow.spec.ts`
   - **Success**: Tests complete user journey from input to captions
   - **Time**: 30 min
 
