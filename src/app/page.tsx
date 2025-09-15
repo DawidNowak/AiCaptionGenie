@@ -27,18 +27,18 @@ export default function Home() {
 
     // Increment usage count after successful generation
     incrementUsage();
-    
+
     // Trigger rate limit display refresh
-    setRefreshTrigger(prev => prev + 1);
+    setRefreshTrigger((prev) => prev + 1);
   }, []);
 
   // Handle errors from caption generation
   const handleError = useCallback((errorMessage: string) => {
     setError(errorMessage);
     setCaptions([]); // Clear previous captions on error
-    
+
     // Trigger rate limit display refresh to show current status
-    setRefreshTrigger(prev => prev + 1);
+    setRefreshTrigger((prev) => prev + 1);
   }, []);
 
   return (
@@ -72,7 +72,10 @@ export default function Home() {
 
         {/* Rate Limit Display */}
         <div className="flex justify-center">
-          <RateLimit refreshTrigger={refreshTrigger} isSubscribed={isSubscribed} />
+          <RateLimit
+            refreshTrigger={refreshTrigger}
+            isSubscribed={isSubscribed}
+          />
         </div>
 
         {/* Error Display */}

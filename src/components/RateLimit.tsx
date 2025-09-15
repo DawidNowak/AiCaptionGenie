@@ -12,7 +12,10 @@ interface RateLimitProps {
   isSubscribed?: boolean; // Hide limits for subscribed users
 }
 
-export function RateLimit({ refreshTrigger, isSubscribed = false }: RateLimitProps) {
+export function RateLimit({
+  refreshTrigger,
+  isSubscribed = false,
+}: RateLimitProps) {
   const [usageStatus, setUsageStatus] = useState<UsageStatus | null>(null);
 
   useEffect(() => {

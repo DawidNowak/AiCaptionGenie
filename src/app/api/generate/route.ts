@@ -37,7 +37,9 @@ function createSuccessResponse(data: any): NextResponse {
 
 // Validation schema for caption request
 const CaptionRequestSchema = z.object({
-    content: z.string().min(1, 'Content is required'),
+    content: z.string({
+        required_error: 'Content is required'
+    }).min(1, 'Content is required'),
     platform: z.nativeEnum(Platform, {
         errorMap: () => ({ message: 'Platform must be one of: instagram, twitter, facebook, linkedin, tiktok' })
     }),
