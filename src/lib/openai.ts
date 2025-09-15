@@ -27,14 +27,63 @@ export function resetOpenAIClient(): void {
 }
 
 /**
+ * Extract JSON array from response that might contain markdown or explanatory text
+ */
+function extractJSONArray(content: string): string[] {
+  try {
+    // First try parsing as direct JSON
+    const parsed = JSON.parse(content);
+    if (Array.isArray(parsed)) {
+      return parsed;
+    }
+  } catch {
+    // Continue to extraction methods
+  }
+
+  // Try to extract JSON from markdown code blocks
+  const jsonBlockMatch = content.match(/```(?:json)?\s*(\[[\s\S]*?\])\s*```/);
+  if (jsonBlockMatch) {
+    try {
+      const parsed = JSON.parse(jsonBlockMatch[1]);
+      if (Array.isArray(parsed)) {
+        return parsed;
+      }
+    } catch {
+      // Continue to other methods
+    }
+  }
+
+  // Try to find JSON array pattern in the text
+  const arrayMatch = content.match(/\[[\s\S]*\]/);
+  if (arrayMatch) {
+    try {
+      const parsed = JSON.parse(arrayMatch[0]);
+      if (Array.isArray(parsed)) {
+        return parsed;
+      }
+    } catch {
+      // Continue to fallback
+    }
+  }
+
+  // Fallback: split by newlines and filter
+  return content.split('\n')
+    .filter(line => line.trim().length > 0)
+    .filter(line => !line.includes('```'))
+    .filter(line => !line.toLowerCase().includes('here are'))
+    .filter(line => !line.toLowerCase().includes('caption'))
+    .slice(0, 10); // Limit to 10 captions max
+}
+
+/**
  * Generate social media captions for text content
  */
 export async function generateCaptions(request: CaptionRequest): Promise<string[]> {
   try {
     const client = getOpenAIClient();
 
-    // Optimized concise system prompt (under 100 tokens)
-    const systemPrompt = `Generate 5-10 ${request.platform} captions in ${request.tone} tone. Include emojis, CTAs, hashtags. Return JSON array.`;
+    // More explicit system prompt that demands only JSON output
+    const systemPrompt = `You must return ONLY a JSON array of 5-10 ${request.platform} captions. ${request.tone} tone. Include emojis, CTAs, hashtags. No explanations, no markdown, just pure JSON array.`;
 
     // Concise user prompt
     const userPrompt = `Content: "${request.content}"${request.imageDescription ? ` Image: ${request.imageDescription}` : ''
@@ -47,7 +96,7 @@ export async function generateCaptions(request: CaptionRequest): Promise<string[
         { role: 'user', content: userPrompt }
       ],
       temperature: 0.8,
-      max_tokens: 300 // Reduced from 1000 for cost efficiency
+      max_tokens: 500 // Increased to prevent truncation
     });
 
     const content = response.choices[0]?.message?.content;
@@ -55,16 +104,14 @@ export async function generateCaptions(request: CaptionRequest): Promise<string[
       throw new Error('No content generated');
     }
 
-    try {
-      const captions = JSON.parse(content);
-      if (!Array.isArray(captions)) {
-        throw new Error('Invalid response format');
-      }
-      return captions;
-    } catch (parseError) {
-      // Fallback: split by newlines if JSON parsing fails
-      return content.split('\n').filter(line => line.trim().length > 0);
+    // Use improved JSON extraction
+    const captions = extractJSONArray(content);
+
+    if (captions.length === 0) {
+      throw new Error('No valid captions extracted');
     }
+
+    return captions;
   } catch (error) {
     // Re-throw API key configuration errors
     if (error instanceof Error && error.message === 'OpenAI API key is not configured') {
@@ -82,8 +129,8 @@ export async function generateImageCaptions(request: CaptionRequest & { imageUrl
   try {
     const client = getOpenAIClient();
 
-    // Ultra-concise system prompt for Vision API (under 50 tokens)
-    const systemPrompt = `Generate 5-10 ${request.platform} captions for image in ${request.tone} tone. Include emojis, CTAs, hashtags. Return JSON array.`;
+    // More explicit system prompt for Vision API
+    const systemPrompt = `You must return ONLY a JSON array of 5-10 ${request.platform} captions for the image. ${request.tone} tone. Include emojis, CTAs, hashtags. No explanations, no markdown, just pure JSON array.`;
 
     const userContent: any[] = [
       {
@@ -111,7 +158,7 @@ export async function generateImageCaptions(request: CaptionRequest & { imageUrl
         { role: 'user', content: userContent }
       ],
       temperature: 0.8,
-      max_tokens: 300 // Reduced from 1000 for cost efficiency
+      max_tokens: 500 // Increased to prevent truncation
     });
 
     const content = response.choices[0]?.message?.content;
@@ -119,16 +166,14 @@ export async function generateImageCaptions(request: CaptionRequest & { imageUrl
       throw new Error('No content generated');
     }
 
-    try {
-      const captions = JSON.parse(content);
-      if (!Array.isArray(captions)) {
-        throw new Error('Invalid response format');
-      }
-      return captions;
-    } catch (parseError) {
-      // Fallback: split by newlines if JSON parsing fails
-      return content.split('\n').filter(line => line.trim().length > 0);
+    // Use improved JSON extraction
+    const captions = extractJSONArray(content);
+
+    if (captions.length === 0) {
+      throw new Error('No valid captions extracted');
     }
+
+    return captions;
   } catch (error) {
     // Re-throw API key configuration errors
     if (error instanceof Error && error.message === 'OpenAI API key is not configured') {

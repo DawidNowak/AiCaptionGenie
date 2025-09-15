@@ -31,6 +31,67 @@ describe('OpenAI Client Wrapper', () => {
     delete process.env.OPENAI_API_KEY;
   });
 
+  describe('JSON extraction from markdown responses', () => {
+    it('should extract JSON from markdown code blocks', async () => {
+      const mockResponse = {
+        choices: [{
+          message: {
+            content: `Here are some humorous Facebook captions for the birthday image:
+
+\`\`\`json
+[
+  "🎉🎂 It's a paw-some party! Who's ready to fetch some cake? 🍰🐾 #HappyBirthday #PawtyTime",
+  "When your best friend turns 9 and still acts like a puppy! 🎈🐶 #AgingLikeFineWine #DogDays",
+  "9 years of belly rubs and wagging tails! 🐕💖 Let's celebrate with treats! 🎊 #BirthdayBark"
+]
+\`\`\``
+          }
+        }]
+      };
+
+      mockCreate.mockResolvedValue(mockResponse);
+
+      const result = await generateCaptions({
+        content: 'Dog birthday party',
+        platform: Platform.FACEBOOK,
+        tone: Tone.HUMOROUS
+      });
+
+      expect(result).toHaveLength(3);
+      expect(result[0]).toContain('paw-some');
+      expect(result[1]).toContain('puppy');
+      expect(result[2]).toContain('belly rubs');
+      // Should not contain markdown or explanatory text
+      expect(result[0]).not.toContain('```');
+      expect(result[0]).not.toContain('Here are');
+    });
+
+    it('should extract JSON without code blocks', async () => {
+      const mockResponse = {
+        choices: [{
+          message: {
+            content: JSON.stringify([
+              "Amazing sunset vibes! 🌅 #sunset #nature #peaceful",
+              "Nature's daily masterpiece ✨ #sunsetlover #golden",
+              "Ending the day with gratitude 🙏 #blessed #nature #peace"
+            ])
+          }
+        }]
+      };
+
+      mockCreate.mockResolvedValue(mockResponse);
+
+      const result = await generateCaptions({
+        content: 'Beautiful sunset over the mountains',
+        platform: Platform.INSTAGRAM,
+        tone: Tone.INSPIRATIONAL
+      });
+
+      expect(result).toHaveLength(3);
+      expect(result[0]).toContain('sunset');
+    });
+  });
+
   describe('generateCaptions', () => {
     it('should generate captions for text input', async () => {
       const mockResponse = {
@@ -60,7 +121,7 @@ describe('OpenAI Client Wrapper', () => {
         messages: [
           {
             role: 'system',
-            content: 'Generate 5-10 instagram captions in inspirational tone. Include emojis, CTAs, hashtags. Return JSON array.'
+            content: 'You must return ONLY a JSON array of 5-10 instagram captions. inspirational tone. Include emojis, CTAs, hashtags. No explanations, no markdown, just pure JSON array.'
           },
           {
             role: 'user',
@@ -68,7 +129,7 @@ describe('OpenAI Client Wrapper', () => {
           }
         ],
         temperature: 0.8,
-        max_tokens: 300
+        max_tokens: 500
       });
     });
 
@@ -114,7 +175,7 @@ describe('OpenAI Client Wrapper', () => {
         messages: [
           {
             role: 'system',
-            content: 'Generate 5-10 instagram captions for image in casual tone. Include emojis, CTAs, hashtags. Return JSON array.'
+            content: 'You must return ONLY a JSON array of 5-10 instagram captions for the image. casual tone. Include emojis, CTAs, hashtags. No explanations, no markdown, just pure JSON array.'
           },
           {
             role: 'user',
@@ -134,7 +195,7 @@ describe('OpenAI Client Wrapper', () => {
           }
         ],
         temperature: 0.8,
-        max_tokens: 300
+        max_tokens: 500
       });
     });
   });
