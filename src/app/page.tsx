@@ -17,6 +17,8 @@ export default function Home() {
   // State management for captions and errors
   const [captions, setCaptions] = useState<string[]>([]);
   const [error, setError] = useState<string>("");
+  const [refreshTrigger, setRefreshTrigger] = useState<number>(0);
+  const [isSubscribed, setIsSubscribed] = useState<boolean>(false); // TODO: Get from subscription status
 
   // Handle successful caption generation
   const handleCaptionsGenerated = useCallback((newCaptions: string[]) => {
@@ -25,25 +27,19 @@ export default function Home() {
 
     // Increment usage count after successful generation
     incrementUsage();
+    
+    // Trigger rate limit display refresh
+    setRefreshTrigger(prev => prev + 1);
   }, []);
 
   // Handle errors from caption generation
   const handleError = useCallback((errorMessage: string) => {
     setError(errorMessage);
     setCaptions([]); // Clear previous captions on error
+    
+    // Trigger rate limit display refresh to show current status
+    setRefreshTrigger(prev => prev + 1);
   }, []);
-
-  // Check rate limit before allowing form submission
-  const handleFormSubmit = useCallback(() => {
-    const rateLimit = checkRateLimit();
-    if (!rateLimit.allowed) {
-      handleError(rateLimit.message || "Daily limit exceeded");
-      return false;
-    }
-
-    setError(""); // Clear errors when starting new generation
-    return true;
-  }, [handleError]);
 
   return (
     <div className="min-h-screen bg-gray-50 px-4 py-8">
@@ -76,7 +72,7 @@ export default function Home() {
 
         {/* Rate Limit Display */}
         <div className="flex justify-center">
-          <RateLimit />
+          <RateLimit refreshTrigger={refreshTrigger} isSubscribed={isSubscribed} />
         </div>
 
         {/* Error Display */}
@@ -108,6 +104,7 @@ export default function Home() {
             <CaptionForm
               onCaptionsGenerated={handleCaptionsGenerated}
               onError={handleError}
+              isSubscribed={isSubscribed}
             />
           </section>
 

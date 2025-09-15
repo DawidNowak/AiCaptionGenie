@@ -7,13 +7,32 @@
 import React, { useEffect, useState } from "react";
 import { checkRateLimit, type UsageStatus } from "@/lib/rate-limit";
 
-export function RateLimit() {
+interface RateLimitProps {
+  refreshTrigger?: number; // Trigger re-check when this changes
+  isSubscribed?: boolean; // Hide limits for subscribed users
+}
+
+export function RateLimit({ refreshTrigger, isSubscribed = false }: RateLimitProps) {
   const [usageStatus, setUsageStatus] = useState<UsageStatus | null>(null);
 
   useEffect(() => {
     const status = checkRateLimit();
     setUsageStatus(status);
-  }, []);
+  }, [refreshTrigger]); // Re-run when refreshTrigger changes
+
+  // Don't show rate limits for subscribed users
+  if (isSubscribed) {
+    return (
+      <div className="bg-green-50 rounded-lg p-4 border border-green-200 w-full max-w-md">
+        <div className="text-sm font-medium text-green-700 mb-2">
+          ✨ Premium Active
+        </div>
+        <div className="text-sm text-green-600">
+          Unlimited caption generations
+        </div>
+      </div>
+    );
+  }
 
   // Show loading state to prevent layout shift
   if (!usageStatus) {
