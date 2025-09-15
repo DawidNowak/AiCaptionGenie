@@ -137,6 +137,14 @@ Module not found: Can't resolve '@/components/CaptionForm'
 3. Verify the `next.config.mjs` includes the webpack alias configuration
 4. Try redeploying after clearing Vercel build cache
 
+#### CSS/Tailwind Build Errors
+
+```
+Error: Cannot find module 'tailwindcss'
+```
+
+**Solution**: This occurs when CSS build dependencies aren't available during the build process. The project configuration includes `tailwindcss`, `postcss`, and `autoprefixer` in the main dependencies (not devDependencies) to ensure they're available during Vercel builds.
+
 #### Stripe Webhook Failures
 
 ```
