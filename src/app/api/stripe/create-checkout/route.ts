@@ -10,7 +10,9 @@ import { z } from 'zod';
 
 // Request validation schema for type safety and security
 const CheckoutRequestSchema = z.object({
-    planId: z.string().min(1, 'Plan ID is required'),
+    planId: z.string({
+        required_error: 'Plan ID is required'
+    }).min(1, 'Plan ID is required'),
     successUrl: z.string().url().optional(),
     cancelUrl: z.string().url().optional()
 });
@@ -53,16 +55,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         const validation = CheckoutRequestSchema.safeParse(rawBody);
 
         if (!validation.success) {
-            // Format validation errors to match expected test format
-            const planIdError = validation.error.errors.find(err => err.path.includes('planId'));
-            if (planIdError) {
-                return createErrorResponse('planId is required', 400);
-            }
-
-            const errorMessage = validation.error.errors
-                .map(err => `${err.path.join('.')}: ${err.message}`)
-                .join(', ');
-            return createErrorResponse(`Validation error: ${errorMessage}`, 400);
+            // Return the first error message from Zod validation
+            const firstError = validation.error.errors[0];
+            return createErrorResponse(firstError.message, 400);
         }
 
         requestBody = validation.data;

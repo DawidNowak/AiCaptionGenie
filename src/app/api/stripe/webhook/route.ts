@@ -6,6 +6,15 @@
 
 import { NextRequest } from 'next/server';
 import { verifyWebhookEvent } from '@/lib/stripe';
+import { z } from 'zod';
+
+// Validation schema for webhook request
+const WebhookRequestSchema = z.object({
+    payload: z.string().min(1, 'Webhook payload is required'),
+    signature: z.string({
+        required_error: 'Missing webhook signature'
+    }).min(1, 'Missing webhook signature')
+});
 
 /**
  * POST handler for Stripe webhook events
@@ -19,6 +28,7 @@ export async function POST(request: NextRequest) {
         // Get the Stripe signature from headers
         const signature = request.headers.get('stripe-signature');
 
+        // Handle missing signature explicitly before Zod validation
         if (!signature) {
             return new Response(
                 JSON.stringify({ error: 'Missing webhook signature' }),
@@ -29,10 +39,28 @@ export async function POST(request: NextRequest) {
             );
         }
 
+        // Validate using Zod schema for consistency  
+        const validation = WebhookRequestSchema.safeParse({
+            payload,
+            signature
+        });
+
+        if (!validation.success) {
+            // Return the first error message from Zod validation
+            const firstError = validation.error.errors[0];
+            return new Response(
+                JSON.stringify({ error: firstError.message }),
+                {
+                    status: 400,
+                    headers: { 'Content-Type': 'application/json' }
+                }
+            );
+        }
+
         // Verify the webhook event signature
         let event;
         try {
-            event = verifyWebhookEvent(payload, signature);
+            event = verifyWebhookEvent(validation.data.payload, validation.data.signature);
         } catch (error) {
             // Check if it's a signature verification error vs unexpected error
             if (error instanceof Error && error.message === 'Webhook signature verification failed') {

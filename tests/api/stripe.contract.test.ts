@@ -180,7 +180,7 @@ describe('POST /api/stripe/create-checkout - Contract Test', () => {
 
         const errorData = await response.json();
         expect(errorData).toHaveProperty('error');
-        expect(errorData.error).toContain('planId is required');
+        expect(errorData.error).toContain('Plan ID is required');
 
         // Verify the Stripe client was NOT called for invalid input
         expect(mockCreateCheckoutSession).not.toHaveBeenCalled();

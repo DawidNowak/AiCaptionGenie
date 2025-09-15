@@ -161,7 +161,7 @@ describe('Error Handling - API Routes', () => {
 
             // Assert
             expect(response.status).toBe(400);
-            expect(responseData.error).toBe('No file provided');
+            expect(responseData.error).toBe('File is required');
         });
 
         it('should return user-friendly error for file validation failures - size limit', async () => {
@@ -277,7 +277,7 @@ describe('Error Handling - API Routes', () => {
 
             // Assert
             expect(response.status).toBe(400);
-            expect(responseData.error).toBe('Platform and tone are required');
+            expect(responseData.error).toBe('Platform must be one of: instagram, twitter, facebook, linkedin, tiktok');
         });
     });
 
@@ -302,7 +302,7 @@ describe('Error Handling - API Routes', () => {
 
             // Assert
             expect(response.status).toBe(400);
-            expect(responseData.error).toBe('planId is required');
+            expect(responseData.error).toBe('Plan ID is required');
         });
 
         it('should return user-friendly error for invalid subscription plan', async () => {

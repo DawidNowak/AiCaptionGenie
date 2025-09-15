@@ -148,7 +148,7 @@ Next.js 14 App Router structure:
   - **Success**: User-friendly error messages for file validation, API failures
   - **Time**: 30 min
 
-- [ ] **T020** [P] Add basic request validation using Zod schemas
+- [x] **T020** [P] Add basic request validation using Zod schemas
   - **Success**: API endpoints validate critical inputs before processing
   - **Time**: 25 min
 

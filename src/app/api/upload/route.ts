@@ -8,6 +8,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { validateFile } from '@/lib/file-validation';
 import { generateImageCaptions } from '@/lib/openai';
 import { Platform, Tone, CaptionRequest, CaptionResponse } from '@/types';
+import { z } from 'zod';
 
 /**
  * Create a standardized error response
@@ -35,6 +36,19 @@ function createSuccessResponse(data: any): NextResponse {
     );
 }
 import { randomUUID } from 'crypto';
+
+// Validation schema for file upload request
+const UploadRequestSchema = z.object({
+    file: z.any().refine((file) => file instanceof File, {
+        message: 'File is required'
+    }),
+    platform: z.nativeEnum(Platform, {
+        errorMap: () => ({ message: 'Platform must be one of: instagram, twitter, facebook, linkedin, tiktok' })
+    }),
+    tone: z.nativeEnum(Tone, {
+        errorMap: () => ({ message: 'Tone must be one of: professional, casual, humorous, inspirational, promotional' })
+    })
+});
 
 /**
  * Convert File to base64 data URL for Vision API
@@ -81,44 +95,33 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         // Parse FormData from request
         const formData = await request.formData();
 
-        // Extract file from FormData
+        // Extract and validate form data using Zod
         const file = formData.get('file') as File;
-        if (!file) {
-            return createErrorResponse('No file provided', 400);
-        }
-
-        // Extract platform and tone parameters
         const platform = formData.get('platform') as string;
         const tone = formData.get('tone') as string;
 
-        if (!platform || !tone) {
-            return createErrorResponse('Platform and tone are required', 400);
+        // Validate using Zod schema
+        const validationResult = UploadRequestSchema.safeParse({
+            file,
+            platform,
+            tone
+        });
+
+        if (!validationResult.success) {
+            // Return the first error message from Zod validation
+            const firstError = validationResult.error.errors[0];
+            return createErrorResponse(firstError.message, 400);
         }
 
-        // Validate platform and tone enums
-        if (!Object.values(Platform).includes(platform as Platform)) {
-            return createErrorResponse(
-                'Invalid platform. Must be one of: instagram, twitter, facebook, linkedin, tiktok',
-                400
-            );
-        }
-
-        if (!Object.values(Tone).includes(tone as Tone)) {
-            return createErrorResponse(
-                'Invalid tone. Must be one of: professional, casual, humorous, inspirational, promotional',
-                400
-            );
-        }
-
-        // Validate file using T004 utility
-        const validationResult = validateFile(file);
-        if (!validationResult.isValid) {
-            return createErrorResponse(validationResult.error!, 400);
+        // Validate file using T004 utility (for size and format)
+        const fileValidationResult = validateFile(file);
+        if (!fileValidationResult.isValid) {
+            return createErrorResponse(fileValidationResult.error!, 400);
         }
 
         // Create caption request object
         const captionRequest: CaptionRequest = {
-            content: `Uploaded ${validationResult.fileType} file: ${file.name}`,
+            content: `Uploaded ${fileValidationResult.fileType} file: ${file.name}`,
             platform: platform as Platform,
             tone: tone as Tone
         };
@@ -143,7 +146,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             metadata: {
                 platform: captionRequest.platform,
                 tone: captionRequest.tone,
-                contentType: validationResult.fileType,
+                contentType: fileValidationResult.fileType,
                 totalCaptions: captions.length,
                 userAgent: request.headers.get('user-agent') || undefined
             }

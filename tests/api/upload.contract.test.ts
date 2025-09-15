@@ -176,7 +176,7 @@ describe('POST /api/upload - Contract Test', () => {
         // Assert - Should return 400 with missing file error
         expect(response.status).toBe(400);
         const responseData = await response.json();
-        expect(responseData.error).toBe('No file provided');
+        expect(responseData.error).toBe('File is required');
         expect(mockValidateFile).not.toHaveBeenCalled();
     });
 
@@ -207,7 +207,7 @@ describe('POST /api/upload - Contract Test', () => {
         // Assert - Should return 400 with validation error
         expect(response.status).toBe(400);
         const responseData = await response.json();
-        expect(responseData.error).toBe('Platform and tone are required');
+        expect(responseData.error).toBe('Platform must be one of: instagram, twitter, facebook, linkedin, tiktok');
     });
 
     it('should handle OpenAI Vision API errors gracefully', async () => {
