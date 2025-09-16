@@ -175,7 +175,7 @@ Next.js 14 App Router structure:
   - **Success**: All API keys configured, build optimization enabled
   - **Time**: 20 min
 
-- [ ] **T025** Deploy to Vercel and verify functionality
+- [] **T025** Deploy to Vercel and verify functionality
   - **Success**: Production app works with all core features functional
   - **Time**: 30 min
 

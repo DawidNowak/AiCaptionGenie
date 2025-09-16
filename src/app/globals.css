@@ -20,6 +20,28 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* Enhanced form input styling for better visibility */
+@layer base {
+  input[type="text"],
+  input[type="file"],
+  textarea,
+  select {
+    color: #111827; /* text-gray-900 */
+    background-color: #ffffff; /* bg-white */
+  }
+
+  input[type="file"]::file-selector-button {
+    background-color: #dbeafe; /* file:bg-blue-50 */
+    color: #1d4ed8; /* file:text-blue-700 */
+  }
+
+  /* Ensure placeholder text is visible but distinct */
+  ::placeholder {
+    color: #6b7280; /* placeholder:text-gray-500 */
+    opacity: 1;
+  }
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;

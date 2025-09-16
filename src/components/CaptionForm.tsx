@@ -188,7 +188,7 @@ const CaptionForm: React.FC<CaptionFormProps> = ({
             value={textContent}
             onChange={(e) => setTextContent(e.target.value)}
             placeholder="Describe your post theme (e.g., 'launching eco-friendly skincare line, targeting millennials')"
-            className="w-full px-3 py-3 sm:py-2 text-base sm:text-sm border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none transition-colors min-h-[44px]"
+            className="w-full px-3 py-3 sm:py-2 text-base sm:text-sm border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none transition-colors min-h-[44px] text-gray-900 placeholder:text-gray-500 bg-white"
             rows={4}
             disabled={isLoading}
             aria-describedby="theme-help"
@@ -212,7 +212,7 @@ const CaptionForm: React.FC<CaptionFormProps> = ({
             type="file"
             accept="image/jpeg,image/jpg,image/png,image/gif"
             onChange={handleFileChange}
-            className="w-full px-3 py-3 sm:py-2 text-base sm:text-sm border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 file:mr-3 sm:file:mr-4 file:py-2 file:px-3 sm:file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition-colors min-h-[44px]"
+            className="w-full px-3 py-3 sm:py-2 text-base sm:text-sm border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 file:mr-3 sm:file:mr-4 file:py-2 file:px-3 sm:file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition-colors min-h-[44px] text-gray-900 bg-white"
             disabled={isLoading}
             aria-describedby="file-help"
           />
@@ -235,7 +235,7 @@ const CaptionForm: React.FC<CaptionFormProps> = ({
               id="platform"
               value={platform}
               onChange={(e) => setPlatform(e.target.value as Platform)}
-              className="w-full px-3 py-3 sm:py-2 text-base sm:text-sm border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors min-h-[44px]"
+              className="w-full px-3 py-3 sm:py-2 text-base sm:text-sm border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors min-h-[44px] text-gray-900 bg-white"
               disabled={isLoading}
               aria-describedby="platform-help"
             >
@@ -262,7 +262,7 @@ const CaptionForm: React.FC<CaptionFormProps> = ({
               id="tone"
               value={tone}
               onChange={(e) => setTone(e.target.value as Tone)}
-              className="w-full px-3 py-3 sm:py-2 text-base sm:text-sm border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors min-h-[44px]"
+              className="w-full px-3 py-3 sm:py-2 text-base sm:text-sm border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors min-h-[44px] text-gray-900 bg-white"
               disabled={isLoading}
               aria-describedby="tone-help"
             >
