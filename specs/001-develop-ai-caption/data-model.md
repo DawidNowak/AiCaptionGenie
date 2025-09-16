@@ -13,7 +13,7 @@ Represents a single caption generation request from a user.
 **Fields**:
 
 - `id`: string (UUID) - Unique identifier for the request
-- `inputType`: 'text' | 'image' | 'video' - Type of input provided
+- `inputType`: 'text' | 'image' - Type of input provided
 - `content`: string - Text description or base64 encoded file data
 - `fileName?`: string - Original filename for uploaded files
 - `fileSize?`: number - File size in bytes (for validation)
@@ -82,7 +82,7 @@ Individual generated caption with all required elements.
 **Platform-Specific Rules**:
 
 - Instagram: Focus on visual storytelling, lifestyle hashtags
-- TikTok: Trending hashtags, casual tone emphasis, video-focused CTAs
+- TikTok: Trending hashtags, casual tone emphasis, creative CTAs
 - LinkedIn: Professional language, industry hashtags, business CTAs
 
 ### UsageSession
@@ -201,7 +201,6 @@ Validation rules and constraints for file uploads.
 
 - `maxSize`: number - Maximum file size in bytes (10MB)
 - `allowedImageTypes`: string[] - Supported image MIME types
-- `allowedVideoTypes`: string[] - Supported video MIME types
 - `allowedExtensions`: string[] - Supported file extensions
 
 **Static Configuration**:
@@ -210,8 +209,7 @@ Validation rules and constraints for file uploads.
 const FILE_VALIDATION: FileValidation = {
   maxSize: 10485760, // 10MB in bytes
   allowedImageTypes: ["image/jpeg", "image/png", "image/gif"],
-  allowedVideoTypes: ["video/mp4", "video/quicktime"], // .mov
-  allowedExtensions: [".jpg", ".jpeg", ".png", ".gif", ".mp4", ".mov"],
+  allowedExtensions: [".jpg", ".jpeg", ".png", ".gif"],
 };
 ```
 

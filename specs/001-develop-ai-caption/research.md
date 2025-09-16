@@ -151,7 +151,7 @@ interface UsageData {
 ### Supported Formats Implementation
 
 **Images**: JPEG, PNG, GIF (as specified in requirements)
-**Videos**: MP4, MOV (as specified in requirements)
+**Images**: JPEG, PNG, GIF (as specified in requirements)
 
 **Validation Strategy**:
 
@@ -162,15 +162,13 @@ interface UsageData {
 **OpenAI Vision API Limitations**:
 
 - Supports: JPEG, PNG, GIF, WebP
-- Does not support: Videos directly
-- Solution: Extract frames from videos for analysis (future enhancement)
-- MVP: Videos generate captions based on filename/description only
+- Supports: Images (JPEG, PNG, GIF)
 
 ### Error Handling Patterns
 
 **File Upload Errors**:
 
-- Invalid format: "File must be JPEG, PNG, GIF, MP4, or MOV and under 10MB"
+- Invalid format: "File must be JPEG, PNG, or GIF and under 10MB"
 - Size exceeded: Same message as above
 - Network errors: "Upload failed. Please try again."
 - Processing errors: "Unable to analyze image. Please try a different image."
@@ -247,7 +245,7 @@ interface UsageData {
 
 ### Feature Enhancements
 
-- Video frame extraction for better video analysis
+- Enhanced image analysis for better caption relevance
 - Batch caption generation
 - Caption templates and customization
 - Social media platform integrations

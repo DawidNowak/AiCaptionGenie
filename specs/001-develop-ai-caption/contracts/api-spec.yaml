@@ -33,7 +33,7 @@ paths:
                 file:
                   type: string
                   format: binary
-                  description: Image or video file (max 10MB)
+                  description: Image file (max 10MB)
                 platform:
                   $ref: "#/components/schemas/Platform"
                 tone:
@@ -82,7 +82,7 @@ paths:
   /upload:
     post:
       summary: Upload and validate media file
-      description: Upload image or video file for caption generation with validation
+      description: Upload image file for caption generation with validation
       tags:
         - File Upload
       requestBody:
@@ -95,7 +95,7 @@ paths:
                 file:
                   type: string
                   format: binary
-                  description: Image or video file (JPEG, PNG, GIF, MP4, MOV, max 10MB)
+                  description: Image file (JPEG, PNG, GIF, max 10MB)
               required:
                 - file
       responses:
@@ -208,7 +208,7 @@ components:
       properties:
         inputType:
           type: string
-          enum: [text, image, video]
+          enum: [text, image]
           description: Type of input provided
         content:
           type: string

@@ -103,7 +103,7 @@ Open [http://localhost:3000](http://localhost:3000) to verify the app loads.
 2. Attempt to upload file over 10MB
 3. Verify appropriate error messages
 
-**Expected Result**: "File must be JPEG, PNG, GIF, MP4, or MOV and under 10MB"
+**Expected Result**: "File must be JPEG, PNG, or GIF and under 10MB"
 
 ## Step 3: Payment Flow Testing (5 minutes)
 
@@ -176,7 +176,7 @@ In Vercel dashboard, add all environment variables from `.env.local` with produc
 
 - [ ] Text-based caption generation works
 - [ ] Image upload and analysis works
-- [ ] Video file handling works (filename-based for MVP)
+- [ ] Image file handling works with Vision API
 - [ ] All platforms (Instagram, TikTok, LinkedIn) generate appropriate content
 - [ ] All tones (casual, professional, humorous) work correctly
 - [ ] Rate limiting enforces 3 free generations per day
@@ -225,7 +225,7 @@ In Vercel dashboard, add all environment variables from `.env.local` with produc
 **"File upload fails"**
 
 - Check file size (must be < 10MB)
-- Verify file format (JPEG, PNG, GIF, MP4, MOV only)
+- Verify file format (JPEG, PNG, GIF only)
 - Ensure sufficient server memory for processing
 
 **"Rate limiting not working"**
