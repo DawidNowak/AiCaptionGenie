@@ -645,6 +645,12 @@ npm test && npm run test:e2e  # Full test suite execution
 - **Revenue-Ready**: Payment integration tested and functional
 - **Quality Foundation**: 100% test coverage ensures reliable expansion
 
+## 🌟 Show Your Support
+
+**🌟 Like this project? Give it a star on [GitHub](https://github.com/DawidNowak/AiCaptionGenie)!**
+
+Your support helps us continue developing innovative Spec-Driven Development examples and AI-powered tools. Stars also help other developers discover this project and learn from the comprehensive specification-to-implementation methodology demonstrated here.
+
 ## 📋 Contributing
 
 We follow the Spec-Driven Development methodology for all contributions:
