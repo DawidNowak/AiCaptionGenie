@@ -6,6 +6,16 @@ AI Caption Genie is a fully-functional Next.js 14 web application that generates
 
 **This project showcases the power of Spec-Driven Development** - where detailed specifications drive implementation instead of coding first and documenting later. Watch how a simple idea transforms into a working MVP through systematic specification-to-implementation methodology.
 
+## 🎬 **Live Demo**
+
+### **Caption Generation in Action**
+
+![Caption Generation Demo](media/caption-generation-demo.gif)
+
+### **Premium Upgrade Flow**
+
+![Stripe Payment Flow](media/stripe-payment-flow.gif)
+
 ## 🌟 What Makes Spec-Driven Development Special
 
 Spec-Driven Development flips the script on traditional software development. Instead of code being king, **specifications become executable** and directly generate working implementations rather than just guiding them.
