@@ -18,7 +18,39 @@ export default function Home() {
   const [captions, setCaptions] = useState<string[]>([]);
   const [error, setError] = useState<string>("");
   const [refreshTrigger, setRefreshTrigger] = useState<number>(0);
-  const [isSubscribed, setIsSubscribed] = useState<boolean>(false); // TODO: Get from subscription status
+
+  // Handle upgrade button click
+  const handleUpgradeClick = useCallback(async () => {
+    try {
+      const response = await fetch("/api/stripe/create-checkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          planId: "unlimited_plan",
+          successUrl: `${window.location.origin}/success?session_id={CHECKOUT_SESSION_ID}`,
+          cancelUrl: `${window.location.origin}/cancel`,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to create checkout session");
+      }
+
+      const data = await response.json();
+
+      // Redirect to Stripe checkout
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        throw new Error("No checkout URL received");
+      }
+    } catch (error) {
+      console.error("Upgrade error:", error);
+      setError("Failed to start upgrade process. Please try again.");
+    }
+  }, []);
 
   // Handle successful caption generation
   const handleCaptionsGenerated = useCallback((newCaptions: string[]) => {
@@ -74,7 +106,7 @@ export default function Home() {
         <div className="flex justify-center px-4">
           <RateLimit
             refreshTrigger={refreshTrigger}
-            isSubscribed={isSubscribed}
+            onUpgradeClick={handleUpgradeClick}
           />
         </div>
 
@@ -107,7 +139,6 @@ export default function Home() {
             <CaptionForm
               onCaptionsGenerated={handleCaptionsGenerated}
               onError={handleError}
-              isSubscribed={isSubscribed}
             />
           </section>
 

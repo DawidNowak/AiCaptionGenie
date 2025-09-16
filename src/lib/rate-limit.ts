@@ -1,7 +1,10 @@
 /**
  * Rate Limiting Utility for AI Caption Genie
  * Tracks 3 free generations per day via localStorage with midnight UTC reset
+ * Premium users get unlimited access
  */
+
+import { isPremiumUser, checkPremiumStatus } from '@/lib/premium';
 
 export interface UsageStatus {
   allowed: boolean;
@@ -9,6 +12,7 @@ export interface UsageStatus {
   used: number;
   resetTime: Date;
   message?: string;
+  isPremium?: boolean;
 }
 
 interface UsageData {
@@ -58,7 +62,7 @@ function getUsageData(): UsageData {
     }
 
     const data = JSON.parse(stored) as UsageData;
-    
+
     // Check if it's a new day, reset if so
     if (data.date !== getCurrentDateUTC()) {
       return {
@@ -95,6 +99,21 @@ function saveUsageData(data: UsageData): void {
  * Check if user can make another request
  */
 export function checkRateLimit(): UsageStatus {
+  // Check premium status first
+  const premiumStatus = checkPremiumStatus();
+
+  if (premiumStatus.isPremium) {
+    return {
+      allowed: true,
+      remaining: 999, // Unlimited for premium users
+      used: 0,
+      resetTime: getNextMidnightUTC(),
+      isPremium: true,
+      message: `Premium active - unlimited generations`
+    };
+  }
+
+  // Free tier rate limiting
   const data = getUsageData();
   const remaining = Math.max(0, data.limit - data.count);
   const allowed = remaining > 0;
@@ -104,14 +123,21 @@ export function checkRateLimit(): UsageStatus {
     remaining,
     used: data.count,
     resetTime: getNextMidnightUTC(),
+    isPremium: false,
     message: allowed ? undefined : `Daily limit of ${data.limit} generations reached. Upgrade to premium for unlimited access.`
   };
 }
 
 /**
  * Increment usage count after successful generation
+ * Only increments for free tier users
  */
 export function incrementUsage(): void {
+  // Don't increment usage for premium users
+  if (isPremiumUser()) {
+    return;
+  }
+
   const data = getUsageData();
   data.count += 1;
   saveUsageData(data);

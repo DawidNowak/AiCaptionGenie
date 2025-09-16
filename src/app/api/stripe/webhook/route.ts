@@ -79,9 +79,33 @@ export async function POST(request: NextRequest) {
         // Process the webhook event based on type
         switch (event.type) {
             case 'checkout.session.completed':
-                // Log successful subscription for MVP
-                // In production, this could update user status or send confirmation emails
-                console.log('Checkout session completed:', event.data.object.id);
+                // Log successful subscription for analytics
+                const session = event.data.object as any;
+                console.log('Checkout session completed:', {
+                    sessionId: session.id,
+                    customerId: session.customer,
+                    subscriptionId: session.subscription,
+                    mode: session.mode,
+                    paymentStatus: session.payment_status
+                });
+
+                // In a production system with user accounts, this would:
+                // - Update user subscription status
+                // - Send confirmation email
+                // - Trigger analytics events
+                // 
+                // For our anonymous MVP, the client-side success page
+                // handles premium activation via localStorage
+                break;
+
+            case 'customer.subscription.deleted':
+                // Log subscription cancellation
+                const subscription = event.data.object as any;
+                console.log('Subscription cancelled:', {
+                    subscriptionId: subscription.id,
+                    customerId: subscription.customer,
+                    canceledAt: subscription.canceled_at
+                });
                 break;
 
             default:

@@ -14,13 +14,11 @@ import { checkRateLimit } from "@/lib/rate-limit";
 interface CaptionFormProps {
   onCaptionsGenerated?: (captions: string[]) => void;
   onError?: (error: string) => void;
-  isSubscribed?: boolean; // For subscription bypass
 }
 
 const CaptionForm: React.FC<CaptionFormProps> = ({
   onCaptionsGenerated,
   onError,
-  isSubscribed = false,
 }) => {
   const [textContent, setTextContent] = useState("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -61,17 +59,15 @@ const CaptionForm: React.FC<CaptionFormProps> = ({
     event.preventDefault();
     setError("");
 
-    // Check rate limit before proceeding (unless user is subscribed)
-    if (!isSubscribed) {
-      const rateLimitStatus = checkRateLimit();
-      if (!rateLimitStatus.allowed) {
-        const errorMessage = rateLimitStatus.message || "Daily limit exceeded";
-        setError(errorMessage);
-        if (onError) {
-          onError(errorMessage);
-        }
-        return;
+    // Check rate limit before proceeding (premium users bypass this)
+    const rateLimitStatus = checkRateLimit();
+    if (!rateLimitStatus.allowed) {
+      const errorMessage = rateLimitStatus.message || "Daily limit exceeded";
+      setError(errorMessage);
+      if (onError) {
+        onError(errorMessage);
       }
+      return;
     }
 
     // Validation: either text content or file must be provided
