@@ -6,7 +6,11 @@ AI Caption Genie is a fully-functional Next.js 14 web application that generates
 
 **This project showcases the power of Spec-Driven Development** - where detailed specifications drive implementation instead of coding first and documenting later. Watch how a simple idea transforms into a working MVP through systematic specification-to-implementation methodology.
 
-## 🎬 **Live Demo**
+## 🎬 Live Demo
+
+**Try AI Caption Genie live at [https://ai-caption-genie.vercel.app/](https://ai-caption-genie.vercel.app/)!**
+
+## 🎬 **Demo Showcases**
 
 ### **Caption Generation in Action**
 
